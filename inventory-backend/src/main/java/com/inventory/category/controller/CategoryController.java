@@ -1,0 +1,83 @@
+package com.inventory.category.controller;
+
+import com.inventory.category.dto.CategoryDTO;
+import com.inventory.category.service.CategoryService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * CLASE CONTROLLER
+ * -----------------
+ * Es la "puerta de entrada" del módulo. Recibe las peticiones HTTP
+ * que manda React (Frontend) y las pasa al Service. No decide nada
+ * de lógica de negocio aquí, solo recibe y responde.
+ *
+ * Rutas según Documento 14 (API REST) del EKB:
+ *   GET    /api/v1/categorias
+ *   GET    /api/v1/categorias/{id}
+ *   POST   /api/v1/categorias
+ *   PUT    /api/v1/categorias/{id}
+ *   DELETE /api/v1/categorias/{id}   (elimina lógicamente, no física)
+ */
+@RestController
+@RequestMapping("/api/v1/categorias")
+public class CategoryController {
+
+    private final CategoryService categoryService;
+
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
+
+    // GET /api/v1/categorias
+    @GetMapping
+    public ResponseEntity<Map<String, Object>> getAll() {
+        List<CategoryDTO> categorias = categoryService.findAllActive();
+        return ResponseEntity.ok(success("Categorías obtenidas correctamente.", categorias));
+    }
+
+    // GET /api/v1/categorias/5
+    @GetMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> getById(@PathVariable Long id) {
+        CategoryDTO categoria = categoryService.findById(id);
+        return ResponseEntity.ok(success("Categoría encontrada.", categoria));
+    }
+
+    // POST /api/v1/categorias
+    @PostMapping
+    public ResponseEntity<Map<String, Object>> create(@Valid @RequestBody CategoryDTO dto) {
+        CategoryDTO creada = categoryService.create(dto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(success("Categoría registrada correctamente.", creada));
+    }
+
+    // PUT /api/v1/categorias/5
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> update(@PathVariable Long id,
+                                                        @Valid @RequestBody CategoryDTO dto) {
+        CategoryDTO actualizada = categoryService.update(id, dto);
+        return ResponseEntity.ok(success("Categoría actualizada correctamente.", actualizada));
+    }
+
+    // DELETE /api/v1/categorias/5  (eliminación lógica: pone activo = false)
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> deactivate(@PathVariable Long id) {
+        categoryService.deactivate(id);
+        return ResponseEntity.ok(success("Categoría desactivada correctamente.", null));
+    }
+
+    // Método pequeño para no repetir el formato de respuesta en cada endpoint
+    private Map<String, Object> success(String mensaje, Object data) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("success", true);
+        body.put("message", mensaje);
+        body.put("data", data);
+        return body;
+    }
+}

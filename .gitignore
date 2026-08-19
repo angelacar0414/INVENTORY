@@ -1,0 +1,18 @@
+# Backend (Maven / IntelliJ)
+target/
+*.class
+.idea/
+*.iml
+out/
+
+# Frontend (React / VS Code)
+node_modules/
+dist/
+.vscode/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Configuración sensible (contraseñas de MySQL)
+application-local.properties
