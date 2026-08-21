@@ -14,7 +14,7 @@ import jakarta.validation.constraints.Size;
  * si mañana cambiamos algo en la tabla, el Frontend no se entera,
  * porque sigue hablando con el DTO.
  *
- * Corresponde al Documento 9 (Capas del sistema) del EKB.
+ * DTO del módulo Categorías
  */
 public class CategoryDTO {
 

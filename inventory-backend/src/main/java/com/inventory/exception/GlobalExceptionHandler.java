@@ -15,7 +15,7 @@ import java.util.Map;
  * --------------------------
  * En vez de poner try/catch en cada Controller, aquí atrapamos
  * TODOS los errores del sistema y devolvemos siempre el mismo
- * formato de respuesta (ver SDD, sección 6.4), sin exponer
+ * formato de respuesta, sin exponer
  * información técnica sensible (stack traces, nombres de clases, etc).
  */
 @RestControllerAdvice

@@ -13,7 +13,7 @@ import jakarta.persistence.*;
  * a mano (por debajo, sigue usando JDBC, que es el driver que conecta
  * Java con MySQL).
  *
- * Corresponde al Documento 12 (Diccionario de Datos) del EKB.
+ * Entidad del módulo Categorías.
  */
 @Entity                       // Le dice a Spring: "esto es una tabla"
 @Table(name = "categoria")    // Nombre exacto de la tabla en MySQL
@@ -25,7 +25,7 @@ public class CategoryEntity {
     private Long id;
 
     // nullable = false  -> equivale a NOT NULL
-    // unique = true     -> equivale a UNIQUE (RF-9: nombre no duplicado)
+    // unique = true     -> equivale a UNIQUE ( nombre no duplicado)
     @Column(name = "nombre", nullable = false, unique = true, length = 100)
     private String nombre;
 
@@ -33,7 +33,7 @@ public class CategoryEntity {
     private String descripcion;
 
     // Campo para la ELIMINACIÓN LÓGICA (nunca se borra de verdad,
-    // solo se pone en false). Ver Documento 8 - Mecanismos de seguridad.
+    // solo se pone en false), como mecanismos de seguridad.
     @Column(name = "activo", nullable = false)
     private Boolean activo = true;
 

@@ -34,6 +34,6 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> 
     // SELECT * FROM categoria WHERE nombre = ? AND activo = true
     Optional<CategoryEntity> findByNombreIgnoreCaseAndActivoTrue(String nombre);
 
-    // Para validar duplicados antes de guardar (RF-9)
+    // Para validar duplicados antes de guardar
     boolean existsByNombreIgnoreCase(String nombre);
 }

@@ -18,7 +18,7 @@ import java.util.Map;
  * que manda React (Frontend) y las pasa al Service. No decide nada
  * de lógica de negocio aquí, solo recibe y responde.
  *
- * Rutas según Documento 14 (API REST) del EKB:
+ * Las rutas de la API o enpoints que permiten al sistema trabajar con las categorias:
  *   GET    /api/v1/categorias
  *   GET    /api/v1/categorias/{id}
  *   POST   /api/v1/categorias

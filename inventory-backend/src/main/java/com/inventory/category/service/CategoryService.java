@@ -16,11 +16,11 @@ import java.util.List;
  * Aquí vive TODA la lógica del negocio del módulo Categorías.
  * El Controller nunca decide reglas de negocio, solo el Service.
  *
- * Reglas implementadas (ver Documento 2 - Requerimientos, Módulo 3):
- *   RF-9  Registrar categoría (nombre no puede repetirse)
- *   RF-10 Editar categoría (nombre no puede repetirse con otra)
- *   RF-11 Desactivar categoría (eliminación lógica, no física)
- *   RF-12 Consultar categorías (solo activas por defecto)
+ * Reglas implementadas:
+ *   Registrar categoría (nombre no puede repetirse)
+ *   Editar categoría (nombre no puede repetirse con otra)
+ *   Desactivar categoría (eliminación lógica, no física)
+ *   Consultar categorías (solo activas por defecto)
  */
 @Service
 public class CategoryService {
@@ -35,7 +35,7 @@ public class CategoryService {
     }
 
     // ---------------------------------------------------------------
-    // RF-12 / CU-12: CONSULTAR CATEGORÍAS
+    // CONSULTAR CATEGORÍAS
     // ---------------------------------------------------------------
     public List<CategoryDTO> findAllActive() {
         return categoryRepository.findByActivoTrue()
@@ -52,7 +52,7 @@ public class CategoryService {
     }
 
     // ---------------------------------------------------------------
-    // RF-9 / CU-9: REGISTRAR CATEGORÍA
+    // REGISTRAR CATEGORÍA
     // ---------------------------------------------------------------
     public CategoryDTO create(CategoryDTO dto) {
         // Regla de negocio: el nombre no puede estar duplicado
@@ -69,7 +69,7 @@ public class CategoryService {
     }
 
     // ---------------------------------------------------------------
-    // RF-10 / CU-10: EDITAR CATEGORÍA
+    // EDITAR CATEGORÍA
     // ---------------------------------------------------------------
     public CategoryDTO update(Long id, CategoryDTO dto) {
         CategoryEntity existente = categoryRepository.findById(id)
@@ -90,7 +90,7 @@ public class CategoryService {
     }
 
     // ---------------------------------------------------------------
-    // RF-11 / CU-11: DESACTIVAR CATEGORÍA (eliminación lógica)
+    // DESACTIVAR CATEGORÍA (eliminación lógica)
     // ---------------------------------------------------------------
     public void deactivate(Long id) {
         CategoryEntity existente = categoryRepository.findById(id)

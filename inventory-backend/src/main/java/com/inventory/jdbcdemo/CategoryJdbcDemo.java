@@ -31,18 +31,18 @@ public class CategoryJdbcDemo {
 
     public static void main(String[] args) {
         try {
-            // 1) INSERTAR una categoría nueva (equivale a RF-9)
+            // 1) INSERTAR una categoría nueva 
             insertarCategoria("Herramientas", "Herramientas manuales y eléctricas");
 
-            // 2) CONSULTAR todas las categorías (equivale a RF-12)
+            // 2) CONSULTAR todas las categorías 
             List<String> categorias = consultarCategorias();
             System.out.println("Categorías registradas:");
             categorias.forEach(System.out::println);
 
-            // 3) ACTUALIZAR una categoría (equivale a RF-10)
+            // 3) ACTUALIZAR una categoría 
             actualizarDescripcion("Herramientas", "Herramientas para el taller");
 
-            // 4) ELIMINAR LÓGICAMENTE una categoría (equivale a RF-11)
+            // 4) ELIMINAR LÓGICAMENTE una categoría 
             desactivarCategoria("Herramientas");
 
         } catch (SQLException e) {
