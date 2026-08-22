@@ -2,23 +2,22 @@
 
 **Proyecto:** INVENTORY - Sistema Web de Gestión de Inventarios
 **Aprendices:** Darío Bustamante y Ángela Carvajal Ortiz
-**Ficha:** 3186706 | **Instructor:** Wilson Alberto Mosquera Caicedo
-**Evidencia:** GA8-220501096-AA1-EV01
+**Ficha:** 3186706 | **Instructor:** Diana Galviz
+**Evidencia:** Codificación de módulos del software (categoría) GA7-220501096-AA2-EV01.
 
 ## ¿Qué trae esta entrega?
 
-El primer módulo del sistema (**Categorías**), siguiendo el orden de
-desarrollo definido en el Documento 10 del EKB (Incremento 1),
+El primer módulo del sistema (**Categorías**), 
 codificado con la arquitectura oficial del proyecto: Java 17 +
 Spring Boot 3 + Spring Data JPA + MySQL 8.
 
-Incluye las 4 operaciones pedidas por la guía (inserción, consulta,
+Incluye las 4 operaciones (inserción, consulta,
 actualización y eliminación -lógica-), correspondientes a:
 
-- RF-9 / CU-9 Registrar categoría
-- RF-10 / CU-10 Editar categoría
-- RF-11 / CU-11 Desactivar categoría (eliminación lógica)
-- RF-12 / CU-12 Consultar categorías
+- Registrar categoría
+- Editar categoría
+- Desactivar categoría (eliminación lógica)
+- Consultar categorías
 
 ## Estructura de carpetas
 
@@ -48,7 +47,7 @@ database/
 
 ## Nota sobre JDBC
 
-La arquitectura oficial de INVENTORY (ver EKB, ADR-004 y ADR-008) usa
+La arquitectura oficial de INVENTORY  usa
 **Spring Data JPA**, que por dentro usa el driver **JDBC**
 (`mysql-connector-j`) configurado en `application.properties` para
 abrir la conexión real con MySQL. Es decir: la conexión JDBC existe,
@@ -74,7 +73,7 @@ es independiente y no forma parte del flujo real de la aplicación.
    - `PUT    http://localhost:8080/api/v1/categorias/1`
    - `DELETE http://localhost:8080/api/v1/categorias/1`
 
-## Próximos módulos (en orden, según Documento 10 del EKB)
+## Orden de los próximos módulos:
 
 1. ~~Categorías~~ ✅ (esta entrega)
 2. Proveedores
