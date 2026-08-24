@@ -1,0 +1,108 @@
+/* ============================================================
+   ESTILOS GLOBALES - INVENTORY
+   Mismo estilo visual usado en el prototipo y en la versión
+   Servlets/JSP: sidebar azul oscuro, tarjetas blancas, acentos azules.
+   ============================================================ */
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f4f6f9;
+  color: #1f2937;
+}
+
+.contenedor {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 220px;
+  background-color: #0f1b3d;
+  color: #cbd5e1;
+  padding: 16px 0;
+}
+
+.sidebar .logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff;
+  padding: 0 20px 20px 20px;
+}
+
+.sidebar-link {
+  color: #cbd5e1 !important;
+  text-decoration: none;
+  padding: 10px 20px;
+  display: block;
+  font-size: 14px;
+}
+
+.sidebar-link:hover {
+  background-color: #1c2b5c;
+}
+
+.sidebar-link.activo {
+  background-color: #2563eb;
+  color: #ffffff !important;
+  border-radius: 4px;
+  margin: 0 8px;
+}
+
+.cerrar-sesion {
+  padding: 10px 20px;
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+.contenido {
+  flex: 1;
+  padding: 24px 32px;
+}
+
+.encabezado-pagina {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.buscador {
+  max-width: 400px;
+  margin-bottom: 16px;
+}
+
+.tarjeta {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.link-editar {
+  color: #2563eb;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: 14px;
+}
+
+.link-desactivar {
+  color: #dc2626;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: 14px;
+}
+
+.formulario {
+  max-width: 480px;
+  background-color: #ffffff;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}

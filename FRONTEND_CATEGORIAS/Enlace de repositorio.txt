@@ -1,0 +1,7 @@
+Repositorio GitHub - Proyecto INVENTORY
+Modulo: Categorias - Frontend (React + TypeScript)
+Evidencia: GA-AA4-EV03
+Aprendices: Dario Bustamante y Angela Carvajal Ortiz
+Ficha: 3186706
+
+https://github.com/angelacar0414/Inventory

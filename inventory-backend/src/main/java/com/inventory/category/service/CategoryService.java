@@ -43,6 +43,13 @@ public class CategoryService {
                 .map(categoryMapper::toDTO)
                 .toList();
     }
+    // Consultar TODAS las categorías, sin filtrar por activo.
+    public List<CategoryDTO> findAllIncludingInactive() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(categoryMapper::toDTO)
+                .toList();
+    }
 
     public CategoryDTO findById(Long id) {
         CategoryEntity entity = categoryRepository.findById(id)
@@ -100,5 +107,18 @@ public class CategoryService {
         // Nunca hacemos delete físico. Solo cambiamos el estado.
         existente.setActivo(false);
         categoryRepository.save(existente);
+    }
+
+// ------------------------------------------------------------
+// REACTIVAR CATEGORÍA
+// ------------------------------------------------------------
+public void reactivate(Long id) {
+    CategoryEntity existente = categoryRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException(
+                    "No se encontró la categoria con id " + id));
+
+    // La volvemos a marcar como activa
+    existente.setActivo(true);
+    categoryRepository.save(existente);
     }
 }

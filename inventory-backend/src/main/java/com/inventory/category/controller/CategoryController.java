@@ -41,6 +41,14 @@ public class CategoryController {
         List<CategoryDTO> categorias = categoryService.findAllActive();
         return ResponseEntity.ok(success("Categorías obtenidas correctamente.", categorias));
     }
+    // GET /api/v1/categorias/todas
+    // Trae TODAS las categorías, incluyendo las inactivas.
+    // Se usa cuando el usuario activa el botón "Ver todas (incluye inactivas)".
+    @GetMapping("/todas")
+    public ResponseEntity<Map<String, Object>> getAllIncludingInactive() {
+        List<CategoryDTO> categorias = categoryService.findAllIncludingInactive();
+        return ResponseEntity.ok(success("Categorías obtenidas correctamente.", categorias));
+    }
 
     // GET /api/v1/categorias/5
     @GetMapping("/{id}")
@@ -70,6 +78,12 @@ public class CategoryController {
     public ResponseEntity<Map<String, Object>> deactivate(@PathVariable Long id) {
         categoryService.deactivate(id);
         return ResponseEntity.ok(success("Categoría desactivada correctamente.", null));
+    }
+    // PUT /api/v1/categorias/5/reactivar  (vuelve a poner activo = true)
+    @PutMapping("/{id}/reactivar")
+    public ResponseEntity<Map<String, Object>> reactivate(@PathVariable Long id) {
+        categoryService.reactivate(id);
+        return ResponseEntity.ok(success("Categoria reactivada correctamente.", null));
     }
 
     // Método pequeño para no repetir el formato de respuesta en cada endpoint
