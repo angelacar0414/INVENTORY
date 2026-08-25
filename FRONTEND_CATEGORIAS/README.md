@@ -39,9 +39,9 @@ FRONTEND_CATEGORIAS/
 1. `main.tsx` montamos la aplicación de React dentro del `<div id="root">`
    de `index.html`, y envuelve todo en `BrowserRouter` para poder navegar
    entre páginas sin recargar el navegador.
-2. `App.tsx` define las rutas: `/categorias` (listado), `/categorias/nueva`
+2. `App.tsx` se definen las rutas: `/categorias` (listado), `/categorias/nueva`
    y `/categorias/editar/:id` (formulario).
-3. `ListaCategorias.tsx` usa `useEffect` para pedir los datos al Backend
+3. `ListaCategorias.tsx` usamos `useEffect` para pedir los datos al Backend
    apenas se abre la página, llamando a `categoriaService.listar()`.
 4. `categoriaService.ts` es la única pieza que usa Axios para hablar con
    `http://localhost:8080/api/v1/categorias` — ningún componente visual
@@ -54,7 +54,7 @@ FRONTEND_CATEGORIAS/
 
 ### 1. Instalación de Node.js 
 
-Ve a `https://nodejs.org` y descarga la versión **LTS**. Instálacion con
+Vamos a `https://nodejs.org` y descarga la versión **LTS**. Instálacion con
 los valores por defecto (Next, Next, Install).
 
 Verificación de instalación abriendo una terminal (`cmd` o Git Bash) y
