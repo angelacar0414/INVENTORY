@@ -59,14 +59,14 @@ que muestra la conexión JDBC de forma explícita y "manual"
 solo como evidencia académica del componente formativo. Esta clase
 es independiente y no forma parte del flujo real de la aplicación.
 
-## Cómo ejecutarlo (paso a paso)
+## Cómo ejecutamos
 
-1. Instalar MySQL 8 y crear la base de datos ejecutando el script
+1. Instalamos MySQL 8 y creamos la base de datos ejecutando el script
    `database/01_create_categoria_table.sql` desde MySQL Workbench.
-2. Abrir la carpeta `inventory-backend` en IntelliJ IDEA.
-3. Editar `application.properties` y poner tu contraseña real de MySQL.
-4. Ejecutar `InventoryApplication.java` (botón ▶ en IntelliJ).
-5. Probar los endpoints en Postman:
+2. Abrimos la carpeta `inventory-backend` en IntelliJ IDEA.
+3. Editamos `application.properties` y ponemos nuestra contraseña real de MySQL.
+4. Ejecutamos `InventoryApplication.java` (botón ▶ en IntelliJ).
+5. Probamos los endpoints en Postman:
    - `GET    http://localhost:8080/api/v1/categorias`
    - `GET    http://localhost:8080/api/v1/categorias/1`
    - `POST   http://localhost:8080/api/v1/categorias`  (body JSON: `{"nombre":"Aseo","descripcion":"Productos de limpieza"}`)
