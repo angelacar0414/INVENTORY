@@ -34,7 +34,7 @@ FRONTEND_CATEGORIAS/
             └── ICategoria.ts             (interfaz TypeScript)
 ```
 
-## Cómo funciona (para explicarlo si te preguntan)
+## Cómo funciona 
 
 1. `main.tsx` monta la aplicación de React dentro del `<div id="root">`
    de `index.html`, y envuelve todo en `BrowserRouter` para poder navegar
