@@ -32,7 +32,7 @@ CATEGORIAS_SERVLET/
         └── WEB-INF/web.xml
 ```
 
-## Cómo funciona (para explicarlo si te preguntan)
+## Cómo funciona 
 
 1. El navegador pide `categorias?accion=listar` → esto es un **GET**.
 2. `CategoriaServlet.doGet()` lo recibe, llama a `CategoriaDAO.listarActivas()`,
