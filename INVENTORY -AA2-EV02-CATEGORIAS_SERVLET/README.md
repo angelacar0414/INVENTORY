@@ -75,8 +75,3 @@ Editamos `src/main/java/com/inventory/categoria/util/ConexionBD.java` y cambiamo
 
 Ejecutamos `database/01_create_categoria_table.sql` en MySQL Workbench.
 
-## Próximos módulos
-
-Con esta misma estructura de Servlet + JSP + DAO se puede replicar para
-Proveedores, Clientes, Productos, etc., cambiando solo el nombre de las
-clases y la tabla.

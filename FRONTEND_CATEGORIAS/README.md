@@ -92,7 +92,3 @@ http://localhost:5173
 
 La abrimos en el navegador para ver la aplicación funcionando.
 
-## Próximos módulos
-
-Con esta misma estructura (`pages`, `components`, `services`, `types`) se
-puede replicar para Proveedores, Clientes, Productos, etc.

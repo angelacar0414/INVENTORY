@@ -73,13 +73,4 @@ es independiente y no forma parte del flujo real de la aplicación.
    - `PUT    http://localhost:8080/api/v1/categorias/1`
    - `DELETE http://localhost:8080/api/v1/categorias/1`
 
-## Orden de los próximos módulos:
 
-1. ~~Categorías~~ ✅ (esta entrega)
-2. Proveedores
-3. Clientes
-4. Productos
-5. Usuarios
-6. Movimientos
-7. Dashboard
-8. Reportes
