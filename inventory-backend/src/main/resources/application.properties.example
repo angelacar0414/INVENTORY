@@ -1,0 +1,29 @@
+# ============================================================
+# CONFIGURACIÓN DEL PROYECTO INVENTORY - BACKEND
+# ============================================================
+
+# Nombre de la aplicación
+spring.application.name=inventory-backend
+
+# Puerto donde corre el backend 
+server.port=8080
+
+# ------------------------------------------------------------
+# CONEXIÓN A LA BASE DE DATOS (esto ES la conexión JDBC)
+# La URL empieza con "jdbc:" porque es literalmente una
+# cadena de conexión JDBC hacia MySQL.
+# ------------------------------------------------------------
+spring.datasource.url=jdbc:mysql://localhost:3306/inventory_db?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+spring.datasource.username=root
+spring.datasource.password=tu_clave_aqui
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# ------------------------------------------------------------
+# CONFIGURACIÓN DE JPA / HIBERNATE
+# ------------------------------------------------------------
+# ddl-auto=update -> si la tabla no existe, Hibernate la crea;
+# si ya existe (porque corriste el script SQL), no la borra.
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect

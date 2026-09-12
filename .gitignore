@@ -16,3 +16,5 @@ Thumbs.db
 
 # Configuración sensible (contraseñas de MySQL)
 application-local.properties
+
+inventory-backend/src/main/resources/application.properties
