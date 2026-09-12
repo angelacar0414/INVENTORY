@@ -10,7 +10,7 @@ CREATE DATABASE IF NOT EXISTS inventory_db
 
 USE inventory_db;
 
--- 2) Crear la tabla categoria (ver Documento 12 - Diccionario de Datos)
+-- 2) Crear la tabla categoria 
 CREATE TABLE IF NOT EXISTS categoria (
     id_categoria BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre       VARCHAR(100) NOT NULL UNIQUE,

@@ -34,65 +34,61 @@ FRONTEND_CATEGORIAS/
             └── ICategoria.ts             (interfaz TypeScript)
 ```
 
-## Cómo funciona (para explicarlo si te preguntan)
+## Cómo funciona 
 
-1. `main.tsx` monta la aplicación de React dentro del `<div id="root">`
+1. `main.tsx` montamos la aplicación de React dentro del `<div id="root">`
    de `index.html`, y envuelve todo en `BrowserRouter` para poder navegar
    entre páginas sin recargar el navegador.
-2. `App.tsx` define las rutas: `/categorias` (listado), `/categorias/nueva`
+2. `App.tsx` se definen las rutas: `/categorias` (listado), `/categorias/nueva`
    y `/categorias/editar/:id` (formulario).
-3. `ListaCategorias.tsx` usa `useEffect` para pedir los datos al Backend
+3. `ListaCategorias.tsx` usamos `useEffect` para pedir los datos al Backend
    apenas se abre la página, llamando a `categoriaService.listar()`.
 4. `categoriaService.ts` es la única pieza que usa Axios para hablar con
    `http://localhost:8080/api/v1/categorias` — ningún componente visual
    llama a Axios directamente.
-5. Al crear o editar, `FormularioCategoria.tsx` valida los datos en el
-   navegador (experiencia de usuario) y también deja que el Backend
+5. Al crear o editar, `FormularioCategoria.tsx` validamos los datos en el
+   navegador (experiencia de usuario) y también dejamos que el Backend
    valide de nuevo (la validación real y definitiva).
 
-## Cómo ejecutarlo
+## Cómo lo ejecutamos
 
-### 1. Instala Node.js (si no lo tienes)
+### 1. Instalación de Node.js 
 
-Ve a `https://nodejs.org` y descarga la versión **LTS**. Instálalo con
+Vamos a `https://nodejs.org` y descarga la versión **LTS**. Instálacion con
 los valores por defecto (Next, Next, Install).
 
-Verifica que quedó instalado abriendo una terminal (`cmd` o Git Bash) y
+Verificación de instalación abriendo una terminal (`cmd` o Git Bash) y
 escribiendo:
 ```
 node -v
 npm -v
 ```
-Deberían mostrar números de versión, sin error.
+Debe mostrar números de versión, sin error.
 
-### 2. Instala las dependencias del proyecto
+### 2. Instalación las dependencias del proyecto
 
-Abre una terminal **dentro de la carpeta** `FRONTEND_CATEGORIAS` y ejecuta:
+Abrimos una terminal **dentro de la carpeta** `FRONTEND_CATEGORIAS` y ejecutamos:
 ```
 npm install
 ```
 Esto descarga React, Axios, Bootstrap, etc. (puede tardar 1-3 minutos).
 
-### 3. Asegúrate de que el Backend esté corriendo
+### 3. Nos aseguramos de que el Backend esté corriendo
 
 Este Frontend necesita que el proyecto `inventory-backend` (Spring Boot)
 esté corriendo en `http://localhost:8080` al mismo tiempo, porque ahí es
 donde pide los datos de las categorías.
 
-### 4. Ejecuta el Frontend
+### 4. Ejecutamos el Frontend
 
 ```
 npm run dev
 ```
 
-Cuando termine, la terminal te muestra una URL, normalmente:
+Cuando terminamos, la terminal muestra una URL, normalmente:
 ```
 http://localhost:5173
 ```
 
-Ábrela en tu navegador para ver la aplicación funcionando.
+La abrimos en el navegador para ver la aplicación funcionando.
 
-## Próximos módulos
-
-Con esta misma estructura (`pages`, `components`, `services`, `types`) se
-puede replicar para Proveedores, Clientes, Productos, etc.

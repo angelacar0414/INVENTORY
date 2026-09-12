@@ -1,15 +1,29 @@
 package com.inventory.auth;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Controlador de Autenticación
- * Expone los endpoints para registro e inicio de sesión
+ * Controlador de Autenticación.
+ * Expone los endpoints para registro, inicio y cierre de sesión.
  *
  * @author Darío Bustamante
  * @version 1.0
@@ -24,85 +38,243 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    // ==================== ENDPOINTS ====================
+    /** Administrador de autenticación de Spring Security */
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     /**
-     * Endpoint para registrar un nuevo usuario
+     * Repositorio utilizado para guardar el contexto de seguridad
+     * dentro de la sesión HTTP.
+     */
+    private final SecurityContextRepository securityContextRepository =
+            new HttpSessionSecurityContextRepository();
+
+
+    // ==================== REGISTRO ====================
+
+    /**
+     * Endpoint para registrar un nuevo usuario.
      *
-     * @param usuarioDTO datos del usuario (email y contraseña)
+     * @param usuarioDTO datos del usuario
      * @return respuesta con mensaje de éxito o error
      */
     @PostMapping("/registrar")
-    public ResponseEntity<Map<String, Object>> registrar(@RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<Map<String, Object>> registrar(
+            @RequestBody UsuarioDTO usuarioDTO) {
 
-        // Crear mapa de respuesta
         Map<String, Object> respuesta = new HashMap<>();
 
         try {
-            // Llamar al servicio para registrar
+
             String mensaje = usuarioService.registrar(usuarioDTO);
 
-            // Verificar si fue exitoso
             if (mensaje.equals("Usuario registrado correctamente")) {
+
                 respuesta.put("success", true);
                 respuesta.put("message", mensaje);
-                respuesta.put("data", usuarioDTO.getEmail());
-                return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
+                respuesta.put("data", usuarioDTO.getUsername());
+
+                return ResponseEntity
+                        .status(HttpStatus.CREATED)
+                        .body(respuesta);
+
             } else {
-                // Si hay error de validación
+
                 respuesta.put("success", false);
                 respuesta.put("message", mensaje);
                 respuesta.put("errors", mensaje);
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuesta);
+
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body(respuesta);
             }
 
         } catch (Exception e) {
-            // Capturar cualquier error no esperado
+
             respuesta.put("success", false);
-            respuesta.put("message", "Error al registrar usuario: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(respuesta);
+            respuesta.put(
+                    "message",
+                    "Error al registrar usuario: " + e.getMessage()
+            );
+
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(respuesta);
         }
     }
 
+
+    // ==================== LOGIN ====================
+
     /**
-     * Endpoint para iniciar sesión (autenticar usuario)
+     * Endpoint para iniciar sesión.
      *
-     * @param usuarioDTO credenciales del usuario (email y contraseña)
-     * @return respuesta con mensaje de autenticación exitosa o error
+     * Spring Security valida las credenciales y, si son correctas,
+     * guarda la autenticación dentro de una sesión HTTP.
+     *
+     * @param usuarioDTO credenciales del usuario
+     * @param request solicitud HTTP
+     * @param response respuesta HTTP
+     * @return respuesta con el resultado de la autenticación
      */
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<Map<String, Object>> login(
+            @RequestBody UsuarioDTO usuarioDTO,
+            HttpServletRequest request,
+            HttpServletResponse response) {
 
-        // Crear mapa de respuesta
         Map<String, Object> respuesta = new HashMap<>();
 
         try {
-            // Llamar al servicio para autenticar
-            String mensaje = usuarioService.autenticar(usuarioDTO);
 
-            // Verificar si fue exitoso
-            if (mensaje.equals("Autenticación satisfactoria")) {
-                respuesta.put("success", true);
-                respuesta.put("message", mensaje);
-                respuesta.put("email", usuarioDTO.getEmail());
-                return ResponseEntity.status(HttpStatus.OK).body(respuesta);
-            } else if (mensaje.equals("El usuario no existe")) {
-                // Usuario no encontrado
+            // ==================== VALIDACIONES ====================
+
+            if (usuarioDTO.getUsername() == null ||
+                    usuarioDTO.getUsername().trim().isEmpty()) {
+
                 respuesta.put("success", false);
-                respuesta.put("message", mensaje);
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(respuesta);
-            } else {
-                // Error de validación (contraseña incorrecta, usuario inactivo, etc)
-                respuesta.put("success", false);
-                respuesta.put("message", mensaje);
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(respuesta);
+                respuesta.put("message", "El username es obligatorio");
+
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body(respuesta);
             }
 
-        } catch (Exception e) {
-            // Capturar cualquier error no esperado
+            if (usuarioDTO.getContraseña() == null ||
+                    usuarioDTO.getContraseña().trim().isEmpty()) {
+
+                respuesta.put("success", false);
+                respuesta.put("message", "La contraseña es obligatoria");
+
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body(respuesta);
+            }
+
+
+            // ==================== AUTENTICACIÓN ====================
+
+            Authentication authentication =
+                    authenticationManager.authenticate(
+                            new UsernamePasswordAuthenticationToken(
+                                    usuarioDTO.getUsername().trim(),
+                                    usuarioDTO.getContraseña()
+                            )
+                    );
+
+
+            // ==================== CREAR CONTEXTO DE SEGURIDAD ====================
+
+            SecurityContext context =
+                    SecurityContextHolder.createEmptyContext();
+
+            context.setAuthentication(authentication);
+
+            SecurityContextHolder.setContext(context);
+
+
+            // ==================== GUARDAR SESIÓN ====================
+
+            securityContextRepository.saveContext(
+                    context,
+                    request,
+                    response
+            );
+
+
+            // ==================== RESPUESTA ====================
+
+            respuesta.put("success", true);
+            respuesta.put("message", "Autenticación satisfactoria");
+            respuesta.put("username", authentication.getName());
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(respuesta);
+
+
+        } catch (DisabledException e) {
+
             respuesta.put("success", false);
-            respuesta.put("message", "Error al autenticar usuario: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(respuesta);
+            respuesta.put("message", "El usuario está inactivo");
+
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(respuesta);
+
+
+        } catch (BadCredentialsException e) {
+
+            respuesta.put("success", false);
+            respuesta.put("message", "Username o contraseña incorrectos");
+
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(respuesta);
+
+
+        } catch (Exception e) {
+
+            respuesta.put("success", false);
+            respuesta.put(
+                    "message",
+                    "Error al autenticar usuario: " + e.getMessage()
+            );
+
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(respuesta);
+        }
+    }
+
+
+    // ==================== LOGOUT ====================
+
+    /**
+     * Endpoint para cerrar sesión.
+     *
+     * Elimina la sesión HTTP actual y limpia el contexto
+     * de seguridad de Spring Security.
+     *
+     * @param request solicitud HTTP
+     * @return respuesta de cierre de sesión
+     */
+    @PostMapping("/logout")
+    public ResponseEntity<Map<String, Object>> logout(
+            HttpServletRequest request) {
+
+        Map<String, Object> respuesta = new HashMap<>();
+
+        try {
+
+            // Obtener la sesión actual, si existe.
+            HttpSession session = request.getSession(false);
+
+            if (session != null) {
+                session.invalidate();
+            }
+
+            // Limpiar el contexto de seguridad.
+            SecurityContextHolder.clearContext();
+
+            respuesta.put("success", true);
+            respuesta.put("message", "Sesión cerrada correctamente");
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(respuesta);
+
+        } catch (Exception e) {
+
+            respuesta.put("success", false);
+            respuesta.put(
+                    "message",
+                    "Error al cerrar sesión: " + e.getMessage()
+            );
+
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(respuesta);
         }
     }
 }

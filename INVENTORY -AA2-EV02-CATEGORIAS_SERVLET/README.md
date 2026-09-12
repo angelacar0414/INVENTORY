@@ -32,7 +32,7 @@ CATEGORIAS_SERVLET/
         └── WEB-INF/web.xml
 ```
 
-## Cómo funciona (para explicarlo si te preguntan)
+## Cómo funciona 
 
 1. El navegador pide `categorias?accion=listar` → esto es un **GET**.
 2. `CategoriaServlet.doGet()` lo recibe, llama a `CategoriaDAO.listarActivas()`,
@@ -53,30 +53,25 @@ correr, a diferencia del backend con Spring Boot que se ejecutaba solo.
 
 ### Opción recomendada: IntelliJ + plugin "Smart Tomcat" (gratis, funciona en Community Edition)
 
-1. Abre IntelliJ → `File → Settings → Plugins`.
-2. Busca **"Smart Tomcat"** e instálalo (dale Restart si lo pide).
-3. Descarga Apache Tomcat 10 desde `https://tomcat.apache.org/download-10.cgi`
-   (elige el ZIP de "Core"), descomprímelo en una carpeta fija, ej:
+1. Abrimos IntelliJ → `File → Settings → Plugins`.
+2. Buscamos **"Smart Tomcat"** e instálamos (damos en Restart si lo pide).
+3. Descargamos Apache Tomcat 10 desde `https://tomcat.apache.org/download-10.cgi`
+   (elegimos el ZIP de "Core"), descomprímimos en una carpeta fija, ej:
    `C:\apache-tomcat-10.1.x`
-4. Abre esta carpeta (`CATEGORIAS_SERVLET`) como proyecto en IntelliJ.
-5. Espera a que Maven cargue las dependencias.
-6. Ve a `Run → Edit Configurations... → + → Smart Tomcat`.
-7. En **"Tomcat Server"** selecciona la carpeta donde descomprimiste Tomcat.
-8. En **"Deployment directory"** deja la que aparece por defecto (webapp).
-9. Dale **Run** (▶).
-10. Abre el navegador en: `http://localhost:8080/categorias-servlet/`
+4. Abrimos esta carpeta (`CATEGORIAS_SERVLET`) como proyecto en IntelliJ.
+5. Esperamos a que Maven cargue las dependencias.
+6. Vamos a `Run → Edit Configurations... → + → Smart Tomcat`.
+7. En **"Tomcat Server"** seleccionamos la carpeta donde descomprimiste Tomcat.
+8. En **"Deployment directory"** dejamos la que aparece por defecto (webapp).
+9. Damos **Run** (▶).
+10. Abrimos el navegador en: `http://localhost:8080/categorias-servlet/`
 
-### Antes de correrlo: configura tu contraseña de MySQL
+### Antes de correrlo: configuramos nuestra contraseña de MySQL
 
-Edita `src/main/java/com/inventory/categoria/util/ConexionBD.java` y cambia
-`TU_CLAVE_MYSQL` por tu contraseña real.
+Editamos `src/main/java/com/inventory/categoria/util/ConexionBD.java` y cambiamos
+`TU_CLAVE_MYSQL` por nuestra contraseña real.
 
-### Antes de correrlo: crea la tabla (si no la tienes de la actividad anterior)
+### Antes de correrlo: creamos la tabla (si no la tenemos de la actividad anterior)
 
-Ejecuta `database/01_create_categoria_table.sql` en MySQL Workbench.
+Ejecutamos `database/01_create_categoria_table.sql` en MySQL Workbench.
 
-## Próximos módulos
-
-Con esta misma estructura de Servlet + JSP + DAO se puede replicar para
-Proveedores, Clientes, Productos, etc., cambiando solo el nombre de las
-clases y la tabla.

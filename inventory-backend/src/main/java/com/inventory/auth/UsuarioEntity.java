@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 /**
- * Entidad Usuario para autenticación y registro
- * Representa un usuario registrado en el sistema
+ * Entidad Usuario para autenticación y registro.
+ * Representa un usuario registrado en el sistema.
  *
  * @author Darío Bustamante
  * @version 1.0
@@ -22,13 +22,29 @@ public class UsuarioEntity {
     @Column(name = "id_usuario")
     private Long idUsuario;
 
-    /** Correo electrónico del usuario (único) */
+    /** Nombre del usuario */
+    @Column(name = "nombre")
+    private String nombre;
+
+    /** Apellido del usuario */
+    @Column(name = "apellido")
+    private String apellido;
+
+    /** Nombre de usuario utilizado para iniciar sesión */
+    @Column(name = "username", unique = true, nullable = false)
+    private String username;
+
+    /** Correo electrónico del usuario */
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
     /** Contraseña encriptada del usuario */
     @Column(name = "contraseña_encriptada", nullable = false)
     private String contraseñaEncriptada;
+
+    /** Rol del usuario dentro del sistema */
+    @Column(name = "rol", nullable = false)
+    private String rol;
 
     /** Indica si el usuario está activo o inactivo */
     @Column(name = "activo")
@@ -42,20 +58,27 @@ public class UsuarioEntity {
     @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
 
+
     // ==================== CONSTRUCTORES ====================
 
-    /** Constructor vacío (JPA) */
+    /** Constructor vacío requerido por JPA */
     public UsuarioEntity() {
     }
 
-    /** Constructor con email y contraseña */
+    /**
+     * Constructor básico con email y contraseña.
+     * Se mantiene temporalmente para no romper el código actual
+     * mientras adaptamos el servicio de autenticación.
+     */
     public UsuarioEntity(String email, String contraseñaEncriptada) {
         this.email = email;
         this.contraseñaEncriptada = contraseñaEncriptada;
         this.activo = true;
+        this.rol = "OPERADOR";
         this.fechaCreacion = LocalDateTime.now();
         this.fechaActualizacion = LocalDateTime.now();
     }
+
 
     // ==================== GETTERS Y SETTERS ====================
 
@@ -65,6 +88,30 @@ public class UsuarioEntity {
 
     public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -81,6 +128,14 @@ public class UsuarioEntity {
 
     public void setContraseñaEncriptada(String contraseñaEncriptada) {
         this.contraseñaEncriptada = contraseñaEncriptada;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 
     public Boolean getActivo() {
