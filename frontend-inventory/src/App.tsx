@@ -10,6 +10,9 @@ import { FormularioCategoria } from "./categories/pages/FormularioCategoria";
 import { ListaProveedores } from "./suppliers/pages/ListaProveedores";
 import { FormularioProveedor } from "./suppliers/pages/FormularioProveedor";
 
+import ListaUsuarios from "./users/pages/ListaUsuarios";
+import FormularioUsuario from "./users/pages/FormularioUsuario";
+
 function App() {
   return (
     <Routes>
@@ -76,6 +79,34 @@ function App() {
         element={
           <ProtectedRoute>
             <FormularioProveedor />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* USUARIOS */}
+      <Route
+        path="/usuarios"
+        element={
+          <ProtectedRoute>
+            <ListaUsuarios />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/usuarios/nuevo"
+        element={
+          <ProtectedRoute>
+            <FormularioUsuario />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/usuarios/editar/:id"
+        element={
+          <ProtectedRoute>
+            <FormularioUsuario />
           </ProtectedRoute>
         }
       />

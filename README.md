@@ -1,135 +1,239 @@
 # INVENTORY - Sistema Web de Gestión de Inventarios (BACKEND)
 
-**Proyecto:** INVENTORY - Sistema Web de Gestión de Inventarios
-**Aprendices:** Darío Bustamante y Ángela Carvajal Ortiz
-**Ficha:** 3186706 
-**Instructor:** Diana Galviz/Wilson Mosquera/Erika Parra
+**Aprendiz:** Dario Bustamante Camargo  
+**Aprendiz:** Ángela Carolina Rojas  
+**Ficha:** [Número de ficha]  
+**Instructor:** [Nombre del instructor]
 
-Módulos:
-
-categorías
-usuarios
-proveedores
-clientes
-productos
-movimientos 
-dashboard
-reportes
-
-## Módulo 1 Categorías (Backend)
-
-**Evidencia:** Codificación de módulos del software (categoría) GA7-220501096-AA2-EV01.
-
-
-## ¿Qué trae esta entrega?
-
-El primer módulo del sistema (**Categorías**), 
-codificado con la arquitectura oficial del proyecto: Java 17 +
-Spring Boot 3 + Spring Data JPA + MySQL 8.
-
-Incluye las 4 operaciones (inserción, consulta,
-actualización y eliminación -lógica-), correspondientes a:
-
-- Registrar categoría
-- Editar categoría
-- Desactivar categoría (eliminación lógica)
-- Consultar categorías
-
-## Estructura de carpetas
-
-```
-inventory-backend/
-├── pom.xml
-└── src/main/
-    ├── java/com/inventory/
-    │   ├── InventoryApplication.java     (clase principal)
-    │   ├── category/
-    │   │   ├── controller/CategoryController.java
-    │   │   ├── service/CategoryService.java
-    │   │   ├── repository/CategoryRepository.java
-    │   │   ├── entity/CategoryEntity.java
-    │   │   ├── dto/CategoryDTO.java
-    │   │   └── mapper/CategoryMapper.java
-    │   ├── exception/                    (compartido por todos los módulos)
-    │   │   ├── GlobalExceptionHandler.java
-    │   │   ├── ResourceNotFoundException.java
-    │   │   └── DuplicateResourceException.java
-    │   └── jdbcdemo/
-    │       └── CategoryJdbcDemo.java     (JDBC "puro", ver nota abajo)
-    └── resources/application.properties
-database/
-└── 01_create_categoria_table.sql
-```
-
-## Nota sobre JDBC
-
-La arquitectura oficial de INVENTORY  usa
-**Spring Data JPA**, que por dentro usa el driver **JDBC**
-(`mysql-connector-j`) configurado en `application.properties` para
-abrir la conexión real con MySQL. Es decir: la conexión JDBC existe,
-solo que Spring nos evita escribir el SQL a mano.
-
-Adicionalmente, se incluye la clase `jdbcdemo/CategoryJdbcDemo.java`,
-que muestra la conexión JDBC de forma explícita y "manual"
-(`DriverManager`, `Connection`, `PreparedStatement`, `ResultSet`),
-solo como evidencia académica del componente formativo. Esta clase
-es independiente y no forma parte del flujo real de la aplicación.
-
-## Cómo ejecutamos
-
-1. Instalamos MySQL 8 y creamos la base de datos ejecutando el script
-   `database/01_create_categoria_table.sql` desde MySQL Workbench.
-2. Abrimos la carpeta `inventory-backend` en IntelliJ IDEA.
-3. Editamos `application.properties` y ponemos nuestra contraseña real de MySQL.
-4. Ejecutamos `InventoryApplication.java` (botón ▶ en IntelliJ).
-5. Probamos los endpoints en Postman:
-   - `GET    http://localhost:8080/api/v1/categorias`
-   - `GET    http://localhost:8080/api/v1/categorias/1`
-   - `POST   http://localhost:8080/api/v1/categorias`  (body JSON: `{"nombre":"Repuestos","descripcion":"Respuestos y accesorios para motos"}`)
-   - `PUT    http://localhost:8080/api/v1/categorias/1`
-   - `DELETE http://localhost:8080/api/v1/categorias/1`
-  
 ---
 
-## Módulo: Usuarios / Autenticación (Backend)
+## Descripción del proyecto
 
+INVENTORY es un sistema web de gestión de inventarios desarrollado para micro y pequeñas empresas (MiPymes), con el objetivo de facilitar el control y administración de la información relacionada con el inventario.
 
+El sistema está enfocado exclusivamente en la gestión y control de inventarios. No corresponde a un sistema ERP y no contempla dentro de su alcance módulos de ventas, facturación, contabilidad o compras.
 
+---
 
-## Módulo 3: Proveedores (Backend)
+## Módulos del sistema
 
-Lo codifiqué siguiendo el mismo patrón que ya había usado en Categorías, para que todo el backend se vea consistente. Tiene el CRUD completo, más dos operaciones extra que agregué: búsqueda por nombre y reactivación de un proveedor que había quedado desactivado.
+El proyecto contempla los siguientes módulos:
 
-### Estructura
+- Autenticación
+- Usuarios
+- Categorías
+- Productos
+- Proveedores
+- Clientes
+- Movimientos de inventario
+- Dashboard y estadísticas
+- Reportes
+- Exportación de reportes a PDF y Excel
 
-supplier/
-├── controller/SupplierController.java
-├── service/SupplierService.java
-├── repository/SupplierRepository.java
-├── entity/SupplierEntity.java
-├── dto/SupplierDTO.java
-└── mapper/SupplierMapper.java
+Actualmente se encuentran implementados:
 
-### Reglas que validé en el Service
+- Autenticación
+- Usuarios
+- Categorías
+- Proveedores
 
-- No dejo registrar un proveedor con un nombre que ya exista.
-- Tampoco dejo repetir el correo electrónico entre dos proveedores.
-- La eliminación es lógica: al "borrar" un proveedor, lo que cambia es su campo `activo` a `false`, el registro nunca se borra de la base de datos.
+Los demás módulos serán desarrollados progresivamente de acuerdo con los requisitos y el alcance definido para el proyecto.
+
+---
+
+## Módulo: Autenticación
+
+El sistema cuenta con un módulo de autenticación para controlar el acceso de los usuarios.
+
+Actualmente se encuentra implementado:
+
+- Inicio de sesión mediante username y contraseña.
+- Registro de usuarios.
+- Cierre de sesión.
+- Manejo de sesiones HTTP.
+- Contraseñas protegidas mediante BCrypt.
+- Control de acceso mediante roles.
+
+Los roles definidos actualmente son:
+
+- ADMINISTRADOR
+- OPERADOR
+
+La gestión de usuarios se encuentra protegida mediante Spring Security y requiere permisos de administrador.
 
 ### Endpoints
 
-- `GET http://localhost:8080/api/v1/proveedores` — todos los proveedores
-- `GET http://localhost:8080/api/v1/proveedores/activos` — solo los activos
-- `GET http://localhost:8080/api/v1/proveedores/buscar?nombre=texto` — búsqueda por nombre
-- `GET http://localhost:8080/api/v1/proveedores/1` — consulta por id
-- `POST http://localhost:8080/api/v1/proveedores` (body: `{"nombre":"Repuestos Moto S.A.S","documento":"900123456-1","telefono":"3011234567","correo":"contacto@repuestosmoto.com","direccion":"Calle 10 # 20-30"}`)
-- `PUT http://localhost:8080/api/v1/proveedores/1` — edición
-- `DELETE http://localhost:8080/api/v1/proveedores/1` — desactivación (eliminación lógica)
-- `PUT http://localhost:8080/api/v1/proveedores/1/reactivar` — reactivación
+```text
+POST /api/v1/auth/login
+POST /api/v1/auth/registrar
+POST /api/v1/auth/logout
+Módulo: Usuarios
 
-Probé estas 9 combinaciones en Postman (registro, duplicado de nombre, listado completo, listado de activos, desactivación, verificación de que el proveedor sigue existiendo pero inactivo, búsqueda por nombre, consulta por id, edición y reactivación), y todas respondieron tal como esperaba.
+El módulo de usuarios permite administrar los usuarios registrados en el sistema.
 
----
+Actualmente se encuentran implementadas las siguientes funcionalidades:
 
+Crear usuarios.
+Consultar usuarios.
+Consultar un usuario por su identificador.
+Actualizar usuarios.
+Desactivar usuarios.
+Reactivar usuarios.
+Buscar usuarios.
+Visualizar el rol y estado de cada usuario.
+Endpoints
+POST   /api/v1/usuarios
+GET    /api/v1/usuarios
+GET    /api/v1/usuarios/{id}
+PUT    /api/v1/usuarios/{id}
+DELETE /api/v1/usuarios/{id}
+PUT    /api/v1/usuarios/{id}/reactivar
 
+El acceso al módulo de usuarios está restringido al rol ADMINISTRADOR.
 
+Módulo: Categorías
+
+El módulo de categorías permite organizar los productos del inventario mediante diferentes categorías.
+
+Actualmente se encuentran implementadas las funcionalidades de:
+
+Crear categorías.
+Consultar categorías.
+Actualizar categorías.
+Desactivar categorías.
+Reactivar categorías.
+Buscar categorías.
+Módulo: Proveedores
+
+El módulo de proveedores permite registrar y administrar la información de los proveedores relacionados con el inventario.
+
+Actualmente se encuentran implementadas las funcionalidades de:
+
+Crear proveedores.
+Consultar proveedores.
+Actualizar proveedores.
+Desactivar proveedores.
+Reactivar proveedores.
+Tecnologías utilizadas
+Backend
+Java 17
+Spring Boot
+Spring Web
+Spring Data JPA
+Spring Security
+Validation
+Maven
+MySQL
+BCrypt
+Sesiones HTTP
+Frontend
+React 18
+TypeScript
+Vite
+Bootstrap 5
+Axios
+React Router
+Herramientas
+Visual Studio Code
+Git
+GitHub
+MySQL Workbench
+Postman
+Arquitectura
+
+El sistema utiliza una arquitectura cliente-servidor:
+
+Frontend (React)
+        |
+        | HTTP / REST
+        v
+Backend (Spring Boot)
+        |
+        | JPA
+        v
+Base de datos (MySQL)
+
+El backend está organizado mediante una arquitectura por capas, principalmente:
+
+Controller
+Service
+Repository
+Base de datos
+
+El sistema utiliza MySQL como sistema gestor de base de datos.
+
+La base de datos utilizada para el proyecto es:
+
+inventory_db
+
+La configuración de conexión se encuentra en:
+
+src/main/resources/application.properties
+Estructura actual del proyecto
+INVENTORY/
+│
+├── database/
+│
+├── frontend-inventory/
+│
+├── inventory-backend/
+│
+├── assets/
+│
+├── README.md
+├── LICENSE
+└── .gitignore
+
+La carpeta docs aún no se encuentra incorporada al repositorio. Se agregará posteriormente para organizar la documentación técnica del proyecto.
+
+Pruebas
+
+Las pruebas de los endpoints del backend se realizan principalmente mediante Postman.
+
+Actualmente se han realizado pruebas de:
+
+Inicio de sesión.
+Registro de usuarios.
+Cierre de sesión.
+Creación de usuarios.
+Consulta de usuarios.
+Consulta de usuario por ID.
+Actualización de usuarios.
+Desactivación de usuarios.
+Reactivación de usuarios.
+Control de acceso según el rol.
+Gestión de categorías.
+Gestión de proveedores.
+
+También se han realizado pruebas de integración entre el frontend y el backend mediante el navegador.
+
+Ejecución del proyecto
+Backend
+
+Desde la carpeta inventory-backend ejecutar:
+
+mvn spring-boot:run
+
+El backend se ejecuta normalmente en:
+
+http://localhost:8080
+Frontend
+
+Desde la carpeta frontend-inventory instalar las dependencias:
+
+npm install
+
+Ejecutar el servidor de desarrollo:
+
+npm run dev
+
+El frontend se ejecuta normalmente en:
+
+http://localhost:5173
+Estado actual del proyecto
+
+El proyecto se encuentra actualmente en etapa de desarrollo.
+
+Los módulos de Autenticación, Usuarios, Categorías y Proveedores cuentan con funcionalidades implementadas y probadas.
+
+Los módulos de Productos, Clientes, Movimientos de inventario, Dashboard, Estadísticas, Reportes y Exportación de reportes serán desarrollados progresivamente de acuerdo con el alcance y los requisitos definidos para INVENTORY.

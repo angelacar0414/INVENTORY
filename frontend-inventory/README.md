@@ -1,22 +1,22 @@
 # INVENTORY - FRONTEND (React + TypeScript)
 
-**Aprendices:** Darío Bustamante y Ángela Carvajal Ortiz
+**Aprendices:** Darío Bustamante Camargo y Ángela Carolina Rojas  
 **Ficha:** 3186706
 
-Este es el proyecto único de React donde vive la interfaz visual de todos los módulos de INVENTORY. Está hecho con React 18 + TypeScript + Vite + Bootstrap 5 + Axios, y consume la API REST del Backend hecho en Spring Boot.
+Este es el proyecto único de React donde vive la interfaz visual de los módulos de INVENTORY. Está desarrollado con React 18 + TypeScript + Vite + Bootstrap 5 + Axios, y consume la API REST del Backend desarrollado en Spring Boot.
 
 ## Módulos incluidos
 
-Módulo 
-
-Categorías 
-Proveedores EN PROCESO
-Usuarios EN PROCESO
-Clientes PENDIENTE
-productos PENDIENTE
-movimientos PENDIENTE
-dashboard PENDIENTE
-reportes PENDIENTE
+Módulo | Estado
+--- | ---
+Categorías | IMPLEMENTADO
+Proveedores | IMPLEMENTADO
+Usuarios | IMPLEMENTADO
+Clientes | PENDIENTE
+Productos | PENDIENTE
+Movimientos | PENDIENTE
+Dashboard | PENDIENTE
+Reportes | PENDIENTE
 
 ## Estructura del proyecto
 
@@ -26,134 +26,204 @@ frontend-inventory/
 ├── vite.config.ts
 ├── tsconfig.json
 └── src/
-├── main.tsx (punto de entrada)
-├── App.tsx (rutas de la aplicación)
-├── index.css (estilos globales)
-├── components/
-│ └── Sidebar.tsx (menú lateral reutilizable)
-├── categories/ (módulo Categorías)
-│ ├── pages/
-│ ├── services/
-│ └── types/
-└── suppliers/ (módulo Proveedores)
-├── pages/
-├── services/
-└── types/
-
+    ├── main.tsx (punto de entrada)
+    ├── App.tsx (rutas de la aplicación)
+    ├── index.css (estilos globales)
+    ├── components/
+    │   └── Sidebar.tsx (menú lateral reutilizable)
+    ├── auth/ (módulo de Autenticación)
+    │   ├── pages/
+    │   ├── services/
+    │   └── types/
+    ├── categories/ (módulo Categorías)
+    │   ├── pages/
+    │   ├── services/
+    │   └── types/
+    ├── suppliers/ (módulo Proveedores)
+    │   ├── pages/
+    │   ├── services/
+    │   └── types/
+    └── users/ (módulo Usuarios)
+        ├── pages/
+        ├── services/
+        └── types/
 
 ## Patrón que seguimos en todos los módulos
 
 1. En `main.tsx` montamos la aplicación de React dentro del `<div id="root">` de `index.html`, y envolvemos todo en `BrowserRouter` para poder navegar entre páginas sin recargar el navegador.
 2. Cada módulo define sus propias rutas dentro de `App.tsx`.
-3. Cada página de listado usa `useEffect` para pedir los datos al Backend apenas se abre, llamando al `service` correspondiente de ese módulo.
-4. Cada módulo tiene su propio archivo de `service`, que es la única pieza que usa Axios para hablar con el Backend — ningún componente visual llama a Axios directamente.
-5. Al crear o editar, validamos los datos en el navegador (experiencia de usuario) y también dejamos que el Backend valide de nuevo (la validación real y definitiva).
+3. Cada página de listado utiliza `useEffect` para solicitar los datos al Backend cuando se abre, llamando al `service` correspondiente del módulo.
+4. Cada módulo tiene su propio archivo de `service`, que es la pieza encargada de utilizar Axios para comunicarse con el Backend.
+5. Al crear o editar, se realiza una validación básica de los datos en el navegador para mejorar la experiencia del usuario y el Backend realiza nuevamente la validación correspondiente.
+6. Las rutas que requieren autenticación están protegidas mediante `ProtectedRoute`.
 
 ## Cómo lo ejecutamos
 
 ### 1. Instalación de Node.js
-Vamos a `https://nodejs.org` y descargamos la versión LTS. Instalación con los valores por defecto (Next, Next, Install).
-Verificamos abriendo una terminal (`cmd` o Git Bash) y escribiendo:
+
+Vamos a `https://nodejs.org` y descargamos la versión LTS.
+
+Verificamos la instalación abriendo una terminal (`cmd`, PowerShell o Git Bash) y escribiendo:
 
 node -v
 npm -v
 
-Debe mostrar números de versión, sin error.
+Debe mostrar los números de versión instalados, sin errores.
 
 ### 2. Instalación de las dependencias del proyecto
+
 Abrimos una terminal dentro de la carpeta `frontend-inventory` y ejecutamos:
 
 npm install
 
-Esto descarga React, Axios, Bootstrap, etc. (puede tardar 1-3 minutos).
+Esto descarga las dependencias necesarias para ejecutar el proyecto.
 
 ### 3. Nos aseguramos de que el Backend esté corriendo
-Este Frontend necesita que el proyecto `inventory-backend` (Spring Boot) esté corriendo en `http://localhost:8080` al mismo tiempo, porque ahí es donde pide los datos de cada módulo.
+
+Este Frontend necesita que el proyecto `inventory-backend` (Spring Boot) esté corriendo en:
+
+http://localhost:8080
+
+El Backend proporciona la API REST que utiliza el Frontend para consultar y administrar la información.
 
 ### 4. Ejecutamos el Frontend
+
+Ejecutamos:
 
 npm run dev
 
 Cuando termina, la terminal muestra una URL, normalmente:
+
 http://localhost:5173
 
-
-La abrimos en el navegador para ver la aplicación funcionando.
+Abrimos esta dirección en el navegador para utilizar la aplicación.
 
 ------------------------------------------------------------------------------
 
 ## MODULO 1: CATEGORIAS (FRONTEND)
 
-La interfaz visual (Frontend) del módulo Categorías, hecha con React 18 +
-TypeScript + Vite + Bootstrap 5 + Axios, siguiendo la arquitectura oficial
-definida. Este Frontend consume la API REST del
-Backend hecho en Spring Boot (evidencia AA1-EV01).
+La interfaz visual (Frontend) del módulo Categorías está desarrollada con React 18 + TypeScript + Vite + Bootstrap 5 + Axios, siguiendo la arquitectura definida para el proyecto.
+
+Este módulo consume la API REST del Backend desarrollado en Spring Boot.
 
 ### Estructura
 
 categories/
 ├── pages/
-│ ├── ListaCategorias.tsx (tabla + buscador)
-│ └── FormularioCategoria.tsx (crear/editar)
+│   ├── ListaCategorias.tsx (tabla + buscador)
+│   └── FormularioCategoria.tsx (crear/editar)
 ├── services/
-│ └── categoriaService.ts (llamadas Axios al Backend)
+│   └── categoriaService.ts (llamadas Axios al Backend)
 └── types/
-└── ICategoria.ts (interfaz TypeScript)
-
+    └── ICategoria.ts (interfaz TypeScript)
 
 ### Rutas
 
 - `/categorias` — listado
-- `/categorias/nueva` — formulario de creación
+- `/categorias/nuevo` — formulario de creación
 - `/categorias/editar/:id` — formulario de edición
 
 ### Detalles específicos
 
-- `ListaCategorias.tsx` usa `useEffect` para pedir los datos al Backend apenas se abre la página, llamando a `categoriaService.listar()`.
-- `categoriaService.ts` habla con `http://localhost:8080/api/v1/categorias`.
+- `ListaCategorias.tsx` utiliza `useEffect` para solicitar los datos al Backend cuando se abre la página.
+- `categoriaService.ts` realiza las peticiones mediante Axios a `http://localhost:8080/api/v1/categorias`.
+- El módulo permite crear, editar, desactivar y reactivar categorías.
 
 -----------------------------------------------------------------------------------------
 
 ## MODULO 2: USUARIOS (FRONTEND)
- 
+
+El módulo de Usuarios permite administrar los usuarios registrados en el sistema desde la interfaz web.
+
+Actualmente se encuentran implementadas las siguientes funcionalidades:
+
+- Listado de usuarios.
+- Búsqueda de usuarios.
+- Creación de usuarios.
+- Edición de usuarios.
+- Desactivación de usuarios.
+- Reactivación de usuarios.
+- Visualización del rol.
+- Visualización del estado del usuario.
+
+### Estructura
+
+users/
+├── pages/
+│   ├── ListaUsuarios.tsx (tabla + buscador)
+│   └── FormularioUsuario.tsx (crear/editar)
+├── services/
+│   └── usuarioService.ts (llamadas Axios al Backend)
+└── types/
+    └── IUsuario.ts (interfaces TypeScript)
+
+### Rutas
+
+- `/usuarios` — listado
+- `/usuarios/nuevo` — formulario de creación
+- `/usuarios/editar/:id` — formulario de edición
+
+### Detalles específicos
+
+- `ListaUsuarios.tsx` muestra los usuarios registrados y permite realizar búsquedas.
+- `FormularioUsuario.tsx` se utiliza tanto para crear como para editar usuarios.
+- `usuarioService.ts` contiene las peticiones HTTP relacionadas con el módulo.
+- El acceso al módulo está protegido por autenticación y el Backend restringe la gestión de usuarios al rol `ADMINISTRADOR`.
 
 -----------------------------------------------------------------------------------------
 
-## MODULO 3: PROVEDORES (FROTEND)
+## MODULO 3: PROVEEDORES (FRONTEND)
 
-Módulo terminado. Sigue exactamente el mismo patrón que Categorías:
+Módulo terminado. Sigue el mismo patrón utilizado en los demás módulos:
 
-- `suppliers/types/IProveedor.ts` — define la forma de un Proveedor y del
-  formulario de creación/edición.
-- `suppliers/services/proveedorService.ts` — única pieza que habla con
-  `http://localhost:8080/api/v1/proveedores` mediante Axios.
-- `suppliers/pages/ListaProveedores.tsx` — tabla con buscador y botón
-  para ver también los proveedores inactivos.
-- `suppliers/pages/FormularioProveedor.tsx` — un mismo formulario sirve
-  para crear y editar, distinguiendo según si la URL trae un `id`.
+- `suppliers/types/IProveedor.ts` — define la estructura de un Proveedor y del formulario de creación/edición.
+- `suppliers/services/proveedorService.ts` — contiene las peticiones mediante Axios al Backend.
+- `suppliers/pages/ListaProveedores.tsx` — muestra la tabla de proveedores y permite realizar búsquedas y gestionar su estado.
+- `suppliers/pages/FormularioProveedor.tsx` — permite crear y editar proveedores utilizando el mismo formulario.
 
-Nota: mientras el login real con sesión no esté terminado, el Backend
-tiene una regla temporal en `SecurityConfig.java` que deja
-`/api/v1/proveedores/**` sin autenticación, solo para poder probar este
-módulo. Esa línea se debe quitar cuando el login de Usuarios esté listo.
+El módulo se encuentra integrado con el Backend mediante la API REST correspondiente.
 
+-----------------------------------------------------------------------------------------
 
+## MODULO 4: AUTENTICACION (FRONTEND)
 
+El módulo de Autenticación permite iniciar y cerrar sesión en la aplicación y controlar el acceso a las rutas protegidas.
 
+Actualmente se encuentra implementado:
 
+- Inicio de sesión mediante username y contraseña.
+- Registro de usuarios.
+- Cierre de sesión.
+- Manejo de sesión HTTP.
+- Protección de rutas mediante `ProtectedRoute`.
 
+### Estructura
 
+auth/
+├── pages/
+│   ├── LoginPage.tsx
+│   ├── RegistroPage.tsx
+│   └── ProtectedRoute.tsx
+├── services/
+│   └── authService.ts
+└── types/
 
+### Rutas
 
+- `/login` — inicio de sesión
+- `/registro` — registro de usuario
 
+Las rutas que requieren autenticación utilizan `ProtectedRoute`. Cuando no existe una sesión activa, el usuario es redirigido a `/login`.
 
+-----------------------------------------------------------------------------------------
 
+## Estado actual del Frontend
 
+Actualmente se encuentran implementados y funcionales los módulos de:
 
+- Autenticación
+- Usuarios
+- Categorías
+- Proveedores
 
-
-
-
-
-
-
+Los módulos de Clientes, Productos, Movimientos, Dashboard y Reportes serán desarrollados posteriormente de acuerdo con los requisitos y el alcance definido para INVENTORY.
