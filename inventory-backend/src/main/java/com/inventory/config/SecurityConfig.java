@@ -25,11 +25,25 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 @Configuration
 public class SecurityConfig {
 
+    /**
+     * Configura BCrypt como algoritmo para encriptar
+     * y verificar las contraseñas de los usuarios.
+     *
+     * @return codificador de contraseñas
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+
+    /**
+     * Configura el proveedor de autenticación utilizando
+     * el servicio que busca los usuarios en la base de datos.
+     *
+     * @param usuarioDetailsService servicio encargado de cargar usuarios
+     * @return proveedor de autenticación configurado
+     */
     @Bean
     public DaoAuthenticationProvider authenticationProvider(
             UsuarioDetailsService usuarioDetailsService) {
@@ -37,12 +51,24 @@ public class SecurityConfig {
         DaoAuthenticationProvider provider =
                 new DaoAuthenticationProvider();
 
+        // Indica cómo Spring Security debe obtener los usuarios.
         provider.setUserDetailsService(usuarioDetailsService);
+
+        // Indica que las contraseñas utilizan BCrypt.
         provider.setPasswordEncoder(passwordEncoder());
 
         return provider;
     }
 
+
+    /**
+     * Crea el administrador de autenticación utilizado
+     * por el sistema para validar las credenciales.
+     *
+     * @param authenticationConfiguration configuración de autenticación
+     * @return administrador de autenticación
+     * @throws Exception si ocurre un error durante la configuración
+     */
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration authenticationConfiguration)
@@ -51,36 +77,78 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+
+    /**
+     * Configura las reglas principales de seguridad de la API.
+     *
+     * Define qué rutas son públicas y cuáles requieren
+     * autenticación o un rol específico.
+     *
+     * @param http configuración de seguridad HTTP
+     * @return cadena de filtros de seguridad
+     * @throws Exception si ocurre un error durante la configuración
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
             throws Exception {
 
         http
+
+                // Deshabilitamos CSRF porque trabajamos con una API REST
+                // y actualmente manejamos la autenticación mediante sesión HTTP.
                 .csrf(csrf -> csrf.disable())
+
+
+                // ==================== AUTORIZACIÓN ====================
 
                 .authorizeHttpRequests(auth -> auth
 
-                        // Login y registro son públicos.
+                        // Login, registro y logout permanecen públicos.
                         .requestMatchers("/api/v1/auth/**").permitAll()
 
-                        // Temporal: proveedores abierto mientras se resuelve el login con sesión real
+
+                        // Proveedores mantiene temporalmente el acceso público
+                        // mientras continuamos con la configuración de seguridad
+                        // del proyecto.
                         .requestMatchers("/api/v1/proveedores/**").permitAll()
 
-                        // El resto de la API requiere autenticación.
+
+                        // La gestión de usuarios está protegida y solamente
+                        // puede ser utilizada por usuarios con rol
+                        // ADMINISTRADOR.
+                        .requestMatchers("/api/v1/usuarios/**")
+                        .hasRole("ADMINISTRADOR")
+
+
+                        // Todas las demás rutas requieren que el usuario
+                        // haya iniciado sesión.
                         .anyRequest().authenticated()
                 )
 
+
+                // ==================== SESIONES ====================
+
                 .sessionManagement(session ->
                         session
+
+                                // Un mismo usuario solamente puede mantener
+                                // una sesión activa al mismo tiempo.
                                 .maximumSessions(1)
                 )
 
+
+                // ==================== MANEJO DE ERRORES ====================
+
                 .exceptionHandling(exception ->
                         exception.authenticationEntryPoint(
-                                new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)
+                                new HttpStatusEntryPoint(
+                                        HttpStatus.UNAUTHORIZED
+                                )
                         )
                 );
 
+
+        // Construye y devuelve la configuración de seguridad.
         return http.build();
     }
 }
