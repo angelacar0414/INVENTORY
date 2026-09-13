@@ -1,6 +1,6 @@
 # INVENTORY - FRONTEND (React + TypeScript)
 
-**Aprendices:** Darío Bustamante Camargo y Ángela Carolina Rojas  
+**Aprendices:** Darío Bustamante Camargo y Ángela Carvajal
 **Ficha:** 3186706
 
 Este es el proyecto único de React donde vive la interfaz visual de los módulos de INVENTORY. Está desarrollado con React 18 + TypeScript + Vite + Bootstrap 5 + Axios, y consume la API REST del Backend desarrollado en Spring Boot.
