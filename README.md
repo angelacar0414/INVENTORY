@@ -1,9 +1,9 @@
 # INVENTORY - Sistema Web de Gestión de Inventarios (BACKEND)
 
 **Aprendiz:** Dario Bustamante Camargo  
-**Aprendiz:** Ángela Carolina Rojas  
-**Ficha:** [Número de ficha]  
-**Instructor:** [Nombre del instructor]
+**Aprendiz:** Ángela Carvajal   
+**Ficha:** 3186706 
+**Instructor:** Diana galviz, Wilson Mosquera, Erika Parra
 
 ---
 
