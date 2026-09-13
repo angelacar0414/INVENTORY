@@ -121,7 +121,21 @@ categories/
 
 ## MODULO 3: PROVEDORES (FROTEND)
 
+Módulo terminado. Sigue exactamente el mismo patrón que Categorías:
 
+- `suppliers/types/IProveedor.ts` — define la forma de un Proveedor y del
+  formulario de creación/edición.
+- `suppliers/services/proveedorService.ts` — única pieza que habla con
+  `http://localhost:8080/api/v1/proveedores` mediante Axios.
+- `suppliers/pages/ListaProveedores.tsx` — tabla con buscador y botón
+  para ver también los proveedores inactivos.
+- `suppliers/pages/FormularioProveedor.tsx` — un mismo formulario sirve
+  para crear y editar, distinguiendo según si la URL trae un `id`.
+
+Nota: mientras el login real con sesión no esté terminado, el Backend
+tiene una regla temporal en `SecurityConfig.java` que deja
+`/api/v1/proveedores/**` sin autenticación, solo para poder probar este
+módulo. Esa línea se debe quitar cuando el login de Usuarios esté listo.
 
 
 
