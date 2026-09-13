@@ -1,6 +1,6 @@
 # INVENTORY - BACKEND (Spring Boot)
 
-**Aprendices:** Darío Bustamante Camargo y Ángela Carolina Rojas  
+**Aprendices:** Darío Bustamante Camargo y Ángela Carvajal  
 **Ficha:** 3186706
 
 Este es el proyecto Backend de INVENTORY, desarrollado con Java 17 y Spring Boot. El Backend proporciona la API REST utilizada por el Frontend para gestionar la información relacionada con el inventario.
