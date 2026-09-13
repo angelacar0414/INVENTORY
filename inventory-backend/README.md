@@ -1,5 +1,9 @@
-#INVENTORY - Sistema Web de Gestión de Inventarios (BACKEND)
-Proyecto: INVENTORY - Sistema Web de Gestión de Inventarios Aprendices: Darío Bustamante y Ángela Carvajal Ortiz Ficha: 3186706 Instructor: Diana Galviz/Wilson Mosquera/Erika Parra
+##INVENTORY - Sistema Web de Gestión de Inventarios (BACKEND)
+
+Proyecto: INVENTORY - Sistema Web de Gestión de Inventarios 
+Aprendices: Darío Bustamante y Ángela Carvajal Ortiz 
+Ficha: 3186706 
+Instructor: Diana Galviz/Wilson Mosquera/Erika Parra
 
 Módulos:
 
