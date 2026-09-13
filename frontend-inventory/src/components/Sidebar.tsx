@@ -1,15 +1,15 @@
-import { Link, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { authService } from "../auth/services/authService";
 
 // COMPONENTE REUTILIZABLE: Sidebar
 // -----------------------------------
-// Se usa en todas las páginas del sistema (por ahora solo Categorías
-// está desarrollada, las demás son enlaces "de vitrina" para más
-// adelante). useLocation() permite saber en qué página está el
-// usuario, para resaltar la opción activa en azul, igual que en
-// el prototipo de diseño.
+// Se utiliza en las páginas internas del sistema.
+// Permite navegar entre los módulos y cerrar la sesión
+// mediante el endpoint de logout del backend.
 
 export function Sidebar() {
   const ubicacion = useLocation();
+  const navigate = useNavigate();
 
   const opciones = [
     { texto: "Dashboard", ruta: "/" },
@@ -22,6 +22,17 @@ export function Sidebar() {
     { texto: "Reportes", ruta: "/reportes" },
   ];
 
+  async function cerrarSesion() {
+    try {
+      await authService.logout();
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    } finally {
+      sessionStorage.removeItem("usuario");
+      navigate("/login");
+    }
+  }
+
   return (
     <div className="sidebar d-flex flex-column">
       <div className="logo">INVENTORY</div>
@@ -32,7 +43,8 @@ export function Sidebar() {
           to={opcion.ruta}
           className={
             "sidebar-link " +
-            (ubicacion.pathname.startsWith(opcion.ruta) && opcion.ruta !== "/"
+            (ubicacion.pathname.startsWith(opcion.ruta) &&
+            opcion.ruta !== "/"
               ? "activo"
               : "")
           }
@@ -41,7 +53,13 @@ export function Sidebar() {
         </Link>
       ))}
 
-      <div className="cerrar-sesion mt-auto">Cerrar sesión</div>
+      <button
+        type="button"
+        onClick={cerrarSesion}
+        className="cerrar-sesion mt-auto"
+      >
+        Cerrar sesión
+      </button>
     </div>
   );
 }
