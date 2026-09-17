@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.http.HttpMethod;
 
 /**
  * Configuración principal de Spring Security.
@@ -107,10 +108,19 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth/**").permitAll()
 
 
-                        // Proveedores mantiene temporalmente el acceso público
-                        // mientras continuamos con la configuración de seguridad
-                        // del proyecto.
-                        .requestMatchers("/api/v1/proveedores/**").permitAll()
+                        // Proveedores: consultar lo puede hacer cualquier usuario
+                        // autenticado (Administrador u Operador), según RF-17.
+                        .requestMatchers(HttpMethod.GET, "/api/v1/proveedores/**")
+                        .hasAnyRole("ADMINISTRADOR", "OPERADOR")
+
+                        // Proveedores: registrar, editar, desactivar y reactivar
+                        // quedan reservados al Administrador, según RF-16, RF-18 y RF-19.
+                        .requestMatchers(HttpMethod.POST, "/api/v1/proveedores/**")
+                        .hasRole("ADMINISTRADOR")
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/proveedores/**")
+                        .hasRole("ADMINISTRADOR")
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/proveedores/**")
+                        .hasRole("ADMINISTRADOR")
 
 
                         // La gestión de usuarios está protegida y solamente
