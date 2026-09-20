@@ -113,6 +113,13 @@ export function LoginPage() {
           respuesta.username || username
         );
 
+        // El backend ahora también nos devuelve el rol del
+        // usuario (Administrador u Operador) dentro de la
+        // respuesta del login. Lo guardamos aquí para poder
+        // mostrarlo después en el Sidebar, sin tener que
+        // pedírselo de nuevo al backend en cada pantalla.
+        sessionStorage.setItem("rol", respuesta.rol || "");
+
         // Después de iniciar sesión enviamos al usuario
         // al módulo de categorías, que actualmente es
         // uno de los módulos desarrollados.

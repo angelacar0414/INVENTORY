@@ -30,6 +30,34 @@ body {
   padding: 0 20px 20px 20px;
 }
 
+/* -----------------------------------------------------------
+   BLOQUE DE USUARIO EN EL SIDEBAR
+   -----------------------------------------------------------
+   Muestra el nombre de usuario y su rol (Administrador u
+   Operador) justo debajo del logo, para que sea fácil saber
+   con qué cuenta se inició sesión sin tener que adivinarlo.
+   ----------------------------------------------------------- */
+.sidebar-usuario {
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  text-align: center;
+}
+
+.sidebar-usuario-nombre {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #ffffff;
+}
+
+.sidebar-usuario-rol {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #a0aec0;
+  margin-top: 0.15rem;
+}
+
 .sidebar-link {
   color: #cbd5e1 !important;
   text-decoration: none;
