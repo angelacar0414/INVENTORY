@@ -36,4 +36,10 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> 
 
     // Para validar duplicados antes de guardar
     boolean existsByNombreIgnoreCase(String nombre);
+
+    // Para el buscador: encuentra categorías cuyo nombre contenga el
+    // texto ingresado, sin importar mayúsculas/minúsculas.
+    // Genera algo como:
+    // SELECT * FROM categoria WHERE nombre LIKE %texto%
+    List<CategoryEntity> findByNombreContainingIgnoreCase(String nombre);
 }

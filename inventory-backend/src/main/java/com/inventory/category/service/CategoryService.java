@@ -57,6 +57,17 @@ public class CategoryService {
                         "No se encontró la categoría con id " + id));
         return categoryMapper.toDTO(entity);
     }
+    // ---------------------------------------------------------------
+    // BUSCAR CATEGORÍAS POR NOMBRE
+    // ---------------------------------------------------------------
+    // Busco categorías cuyo nombre coincida (parcialmente) con el
+    // texto de búsqueda que recibo, para el buscador del Frontend.
+    public List<CategoryDTO> buscarPorNombre(String nombre) {
+        return categoryRepository.findByNombreContainingIgnoreCase(nombre)
+                .stream()
+                .map(categoryMapper::toDTO)
+                .toList();
+    }
 
     // ---------------------------------------------------------------
     // REGISTRAR CATEGORÍA

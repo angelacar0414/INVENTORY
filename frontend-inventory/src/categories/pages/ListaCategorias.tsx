@@ -9,6 +9,10 @@ import type { ICategoria } from "../types/ICategoria";
 // Es la pantalla principal del módulo. Al cargar, pide al Backend
 // la lista de categorías activas y las muestra en una tabla, con
 // buscador en tiempo real y acciones de Editar/Desactivar.
+//
+// El buscador ya NO filtra localmente: cada vez que el texto de
+// búsqueda cambia, se le vuelve a preguntar al Backend mediante el
+// endpoint /categorias/buscar, igual que ya lo hace Proveedores.
 
 export function ListaCategorias() {
   const [categorias, setCategorias] = useState<ICategoria[]>([]);
@@ -17,19 +21,29 @@ export function ListaCategorias() {
   const [textoBusqueda, setTextoBusqueda] = useState("");
   const [verTodas, setVerTodas] = useState(false);
 
-  // useEffect con [] vacío = se ejecuta UNA sola vez, cuando el
-  // componente se muestra por primera vez en pantalla.
+  // Este useEffect se vuelve a ejecutar cada vez que cambia el texto
+  // de búsqueda o el interruptor "Ver todas (incluye inactivas)".
   useEffect(() => {
     cargarCategorias();
-  }, [verTodas]);
+  }, [verTodas, textoBusqueda]);
 
   async function cargarCategorias() {
     try {
       setCargando(true);
       setMensajeError(null);
-      const datos = verTodas
-  ? await categoriaService.listarTodas()
-  : await categoriaService.listar();
+
+      let datos: ICategoria[];
+
+      if (textoBusqueda.trim() !== "") {
+        // Si hay texto escrito en el buscador, le preguntamos
+        // directamente al Backend por ese nombre.
+        datos = await categoriaService.buscar(textoBusqueda.trim());
+      } else if (verTodas) {
+        datos = await categoriaService.listarTodas();
+      } else {
+        datos = await categoriaService.listar();
+      }
+
       setCategorias(datos);
     } catch (error) {
       setMensajeError(
@@ -46,32 +60,23 @@ export function ListaCategorias() {
 
     try {
       await categoriaService.desactivar(id);
-      // Volvemos a pedir la lista al Backend para que se refleje el cambio
       cargarCategorias();
-      } catch (error) {
-    alert("Ocurrió un error al desactivar la categoría.");
-  }
-}
-
-async function manejarReactivar(id: number) {
-  const confirmado = window.confirm("¿Reactivar esta categoría?");
-  if (!confirmado) return;
-
-  try {
-    await categoriaService.reactivar(id);
-    cargarCategorias();
-  } catch (error) {
-    setMensajeError("No se pudo reactivar la categoría.");
-  }
+    } catch (error) {
+      alert("Ocurrió un error al desactivar la categoría.");
+    }
   }
 
-  // Filtro en el navegador: no vuelve a pedir datos al Backend,
-  // solo oculta/muestra filas ya cargadas en memoria.
-  const categoriasFiltradas = categorias.filter((categoria) =>
-    (categoria.nombre + " " + categoria.descripcion)
-      .toLowerCase()
-      .includes(textoBusqueda.toLowerCase())
-  );
+  async function manejarReactivar(id: number) {
+    const confirmado = window.confirm("¿Reactivar esta categoría?");
+    if (!confirmado) return;
+
+    try {
+      await categoriaService.reactivar(id);
+      cargarCategorias();
+    } catch (error) {
+      setMensajeError("No se pudo reactivar la categoría.");
+    }
+  }
 
   return (
     <div className="contenedor">
@@ -91,20 +96,20 @@ async function manejarReactivar(id: number) {
         {mensajeError && <div className="alert alert-danger">{mensajeError}</div>}
 
         <div className="d-flex gap-2 mb-3">
-  <input
-    type="text"
-    className="form-control buscador"
-    placeholder="Buscar categoría..."
-    value={textoBusqueda}
-    onChange={(e) => setTextoBusqueda(e.target.value)}
-  />
-  <button
-    className="btn btn-outline-secondary text-nowrap"
-    onClick={() => setVerTodas(!verTodas)}
-  >
-    {verTodas ? "Ver solo activas" : "Ver todas (incluye inactivas)"}
-  </button>
-</div>
+          <input
+            type="text"
+            className="form-control buscador"
+            placeholder="Buscar categoría..."
+            value={textoBusqueda}
+            onChange={(e) => setTextoBusqueda(e.target.value)}
+          />
+          <button
+            className="btn btn-outline-secondary text-nowrap"
+            onClick={() => setVerTodas(!verTodas)}
+          >
+            {verTodas ? "Ver solo activas" : "Ver todas (incluye inactivas)"}
+          </button>
+        </div>
 
         <div className="tarjeta">
           {cargando ? (
@@ -121,14 +126,14 @@ async function manejarReactivar(id: number) {
                 </tr>
               </thead>
               <tbody>
-                {categoriasFiltradas.length === 0 ? (
+                {categorias.length === 0 ? (
                   <tr>
                     <td colSpan={5} className="text-center text-muted py-4">
                       No se encontraron categorías.
                     </td>
                   </tr>
                 ) : (
-                  categoriasFiltradas.map((categoria) => (
+                  categorias.map((categoria) => (
                     <tr key={categoria.id}>
                       <td>{categoria.id}</td>
                       <td>{categoria.nombre}</td>
@@ -151,20 +156,20 @@ async function manejarReactivar(id: number) {
                           Editar
                         </Link>
                         {categoria.activo ? (
-  <button
-    className="link-desactivar"
-    onClick={() => manejarDesactivar(categoria.id)}
-  >
-    Desactivar
-  </button>
-) : (
-  <button
-  className="link-desactivar"
-  onClick={() => manejarReactivar(categoria.id)}
->
-  Reactivar
-</button>
-)}
+                          <button
+                            className="link-desactivar"
+                            onClick={() => manejarDesactivar(categoria.id)}
+                          >
+                            Desactivar
+                          </button>
+                        ) : (
+                          <button
+                            className="link-desactivar"
+                            onClick={() => manejarReactivar(categoria.id)}
+                          >
+                            Reactivar
+                          </button>
+                        )}
                       </td>
                     </tr>
                   ))

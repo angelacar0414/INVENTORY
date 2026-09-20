@@ -49,6 +49,14 @@ public class CategoryController {
         List<CategoryDTO> categorias = categoryService.findAllIncludingInactive();
         return ResponseEntity.ok(success("Categorías obtenidas correctamente.", categorias));
     }
+    // GET /api/v1/categorias/buscar?nombre=...
+    // Busco categorías por nombre (búsqueda parcial), para el
+    // campo "Buscar categoría" del Frontend.
+    @GetMapping("/buscar")
+    public ResponseEntity<Map<String, Object>> buscar(@RequestParam String nombre) {
+        List<CategoryDTO> categorias = categoryService.buscarPorNombre(nombre);
+        return ResponseEntity.ok(success("Búsqueda realizada correctamente.", categorias));
+    }
 
     // GET /api/v1/categorias/5
     @GetMapping("/{id}")

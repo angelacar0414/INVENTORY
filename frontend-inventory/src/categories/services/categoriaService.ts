@@ -19,6 +19,16 @@ export const categoriaService = {
     return respuesta.data.data;
   },
 
+  // Buscar categorías por nombre (búsqueda parcial), consultando
+  // directamente al Backend en vez de filtrar localmente. Así el
+  // buscador funciona igual que el de Proveedores.
+  async buscar(nombre: string): Promise<ICategoria[]> {
+    const respuesta = await api.get<RespuestaApi<ICategoria[]>>(
+      `/categorias/buscar?nombre=${nombre}`
+    );
+    return respuesta.data.data;
+  },
+
   // Consultar una categoría por su ID.
   async buscarPorId(id: number): Promise<ICategoria> {
     const respuesta = await api.get<RespuestaApi<ICategoria>>(`/categorias/${id}`);
