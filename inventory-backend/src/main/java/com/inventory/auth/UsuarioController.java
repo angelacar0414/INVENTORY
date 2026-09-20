@@ -182,11 +182,36 @@ public class UsuarioController {
             );
 
 
+            // ==================== OBTENER EL ROL ====================
+
+            // Cuando Spring Security valida las credenciales, ya sabe
+            // qué rol tiene el usuario (lo tomó de UsuarioDetailsService
+            // al momento de autenticar). Ese rol queda guardado dentro
+            // de "authorities", pero con el prefijo "ROLE_" que Spring
+            // Security agrega automáticamente por dentro (por ejemplo:
+            // "ROLE_ADMINISTRADOR").
+            //
+            // Como al Frontend no le sirve ese prefijo, lo quitamos
+            // aquí antes de mandarlo, para que solo llegue
+            // "ADMINISTRADOR" u "OPERADOR", tal como están guardados
+            // en la base de datos.
+            String rol = authentication.getAuthorities().stream()
+                    .findFirst()
+                    .map(a -> a.getAuthority().replace("ROLE_", ""))
+                    .orElse("");
+
+
             // ==================== RESPUESTA ====================
 
             respuesta.put("success", true);
             respuesta.put("message", "Autenticación satisfactoria");
             respuesta.put("username", authentication.getName());
+
+            // Enviamos también el rol para que el Frontend pueda
+            // mostrar en pantalla si el usuario que inició sesión
+            // es Administrador u Operador, sin tener que volver a
+            // consultar la base de datos desde otra pantalla.
+            respuesta.put("rol", rol);
 
             return ResponseEntity
                     .status(HttpStatus.OK)
