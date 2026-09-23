@@ -12,7 +12,7 @@ Módulo | Estado
 Categorías | IMPLEMENTADO
 Proveedores | IMPLEMENTADO
 Usuarios | IMPLEMENTADO
-Clientes | PENDIENTE
+Clientes | IMPLEMENTADO
 Productos | PENDIENTE
 Movimientos | PENDIENTE
 Dashboard | PENDIENTE
@@ -216,6 +216,14 @@ auth/
 Las rutas que requieren autenticación utilizan `ProtectedRoute`. Cuando no existe una sesión activa, el usuario es redirigido a `/login`.
 
 -----------------------------------------------------------------------------------------
+## MODULO 5: CLIENTES (FRONTEND)
+Módulo terminado. Sigue el mismo patrón utilizado en los demás módulos:
+
+clients/types/ICliente.ts — define la estructura de un Cliente y del formulario de creación/edición.
+clients/services/clienteService.ts — contiene las peticiones mediante Axios al Backend.
+clients/pages/ListaClientes.tsx — muestra la tabla de clientes y permite realizar búsquedas y gestionar su estado.
+clients/pages/FormularioCliente.tsx — permite crear y editar clientes utilizando el mismo formulario.
+
 
 ## Estado actual del Frontend
 
@@ -225,5 +233,6 @@ Actualmente se encuentran implementados y funcionales los módulos de:
 - Usuarios
 - Categorías
 - Proveedores
+- Clientes 
 
-Los módulos de Clientes, Productos, Movimientos, Dashboard y Reportes serán desarrollados posteriormente de acuerdo con los requisitos y el alcance definido para INVENTORY.
+Los módulos de Productos, Movimientos, Dashboard y Reportes serán desarrollados posteriormente de acuerdo con los requisitos y el alcance definido para INVENTORY.
