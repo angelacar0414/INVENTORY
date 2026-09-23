@@ -63,8 +63,8 @@ Controller
    MySQL
 
 Los controladores reciben las solicitudes HTTP, los servicios contienen la lógica de negocio y los repositorios se encargan de la comunicación con la base de datos mediante Spring Data JPA.
-
-Módulo: Autenticación
+-------------------------------------------------------------------
+## Módulo: Autenticación
 
 El módulo de autenticación permite controlar el acceso de los usuarios al sistema.
 
@@ -86,7 +86,8 @@ Endpoints
 POST /api/v1/auth/login
 POST /api/v1/auth/registrar
 POST /api/v1/auth/logout
-Módulo: Usuarios
+-----------------------------------------------------------------------------
+## Módulo: Usuarios
 
 El módulo de usuarios permite administrar los usuarios registrados en el sistema.
 
@@ -110,8 +111,8 @@ DELETE /api/v1/usuarios/{id}
 PUT    /api/v1/usuarios/{id}/reactivar
 
 El acceso a los endpoints de gestión de usuarios está restringido al rol ADMINISTRADOR.
-
-Módulo: Categorías
+----------------------------------------------------------------
+## Módulo: Categorías
 
 El módulo de categorías permite gestionar las categorías utilizadas para organizar los productos del inventario.
 
@@ -131,7 +132,8 @@ service
 repository
 entity
 dto
-Módulo: Proveedores
+---------------------------------------------------------------
+## Módulo: Proveedores
 
 El módulo de proveedores permite registrar y administrar la información de los proveedores relacionados con el inventario.
 
@@ -150,6 +152,28 @@ service
 repository
 entity
 dto
+-----------------------------------------------------------------------
+## Módulo: Clientes
+
+El módulo de clientes permite registrar y administrar la información de los clientes asociados a las salidas de productos del inventario.
+
+Actualmente se encuentran implementadas funcionalidades para:
+
+Crear clientes.
+Consultar clientes.
+Actualizar clientes.
+Desactivar clientes.
+Reactivar clientes.
+Buscar clientes.
+
+El módulo utiliza una estructura separada de:
+
+controller
+service
+repository
+entity
+dto
+----------------------------------------------------------------------
 Seguridad
 
 El Backend utiliza Spring Security para controlar el acceso a los diferentes recursos de la API.
@@ -217,6 +241,7 @@ Contraseña.
 Configuración de JPA y Hibernate.
 Configuración relacionada con el servidor.
 Estado actual del Backend
+-----------------------------------------------------------------------
 
 Actualmente se encuentran implementados los módulos de:
 
@@ -224,5 +249,6 @@ Autenticación.
 Usuarios.
 Categorías.
 Proveedores.
+clientes
 
 Los módulos restantes del sistema serán desarrollados progresivamente de acuerdo con los requisitos y el alcance definido para INVENTORY.
