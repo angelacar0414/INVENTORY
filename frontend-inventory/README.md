@@ -15,7 +15,7 @@ Usuarios | IMPLEMENTADO
 Clientes | IMPLEMENTADO
 Productos | PENDIENTE
 Movimientos | PENDIENTE
-Dashboard | PENDIENTE
+Dashboard | IMPLEMENTADO
 Reportes | PENDIENTE
 
 ## Estructura del proyecto
@@ -224,6 +224,40 @@ clients/services/clienteService.ts — contiene las peticiones mediante Axios al
 clients/pages/ListaClientes.tsx — muestra la tabla de clientes y permite realizar búsquedas y gestionar su estado.
 clients/pages/FormularioCliente.tsx — permite crear y editar clientes utilizando el mismo formulario.
 
+-----------------------------------------------------------------------------------------
+
+## MODULO 6: DASHBOARD (FRONTEND)
+
+El módulo de Dashboard es la pantalla principal del sistema, la que se muestra apenas iniciamos sesión. A diferencia de los demás módulos, no tiene formulario de creación ni edición: solo muestra un resumen del estado del inventario.
+
+Actualmente se encuentra implementado:
+
+- Consulta de indicadores generales (productos totales, stock bajo, agotados, entradas del día, salidas del día).
+- Listado de los últimos movimientos registrados.
+- Acceso disponible tanto para el rol ADMINISTRADOR como para el rol OPERADOR.
+
+### Estructura
+
+dashboard/
+├── pages/
+│   └── DashboardPage.tsx (pantalla principal)
+├── services/
+│   └── dashboardService.ts (llamadas Axios al Backend)
+└── types/
+    └── IDashboard.ts (interfaces TypeScript)
+
+### Rutas
+
+- `/dashboard` — pantalla principal, a la que se redirige automáticamente después de iniciar sesión.
+
+### Detalles específicos
+
+- `DashboardPage.tsx` utiliza `useEffect` para solicitar el resumen al Backend cuando se abre la página.
+- `dashboardService.ts` realiza la petición mediante Axios a `http://localhost:8080/api/v1/dashboard`.
+- Mientras los módulos de Productos y Movimientos no estén desarrollados, los indicadores relacionados con estos se muestran en cero, ya que todavía no existe información que consultar.
+
+  -----------------------------------------------------
+
 
 ## Estado actual del Frontend
 
@@ -233,6 +267,7 @@ Actualmente se encuentran implementados y funcionales los módulos de:
 - Usuarios
 - Categorías
 - Proveedores
-- Clientes 
+- Clientes
+- Dashboard
 
-Los módulos de Productos, Movimientos, Dashboard y Reportes serán desarrollados posteriormente de acuerdo con los requisitos y el alcance definido para INVENTORY.
+Los módulos de Productos, Movimientos y Reportes serán desarrollados posteriormente de acuerdo con los requisitos y el alcance definido para INVENTORY.
