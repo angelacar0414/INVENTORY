@@ -121,9 +121,9 @@ export function LoginPage() {
         sessionStorage.setItem("rol", respuesta.rol || "");
 
         // Después de iniciar sesión enviamos al usuario
-        // al módulo de categorías, que actualmente es
-        // uno de los módulos desarrollados.
-        navigate("/categorias");
+        // al Dashboard, que ahora es la pantalla principal
+        // del sistema.
+        navigate("/dashboard");
       } else {
         // Si el backend responde que la autenticación
         // no fue satisfactoria, mostramos su mensaje.

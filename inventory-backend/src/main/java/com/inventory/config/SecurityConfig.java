@@ -122,6 +122,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/proveedores/**")
                         .hasRole("ADMINISTRADOR")
 
+                        // Dashboard: es de solo lectura, así que cualquier usuario
+                        // autenticado (Administrador u Operador) puede consultarlo.
+                        .requestMatchers(HttpMethod.GET, "/api/v1/dashboard/**")
+                        .hasAnyRole("ADMINISTRADOR", "OPERADOR")
+
 
                         // La gestión de usuarios está protegida y solamente
                         // puede ser utilizada por usuarios con rol

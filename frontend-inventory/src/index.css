@@ -134,3 +134,37 @@ body {
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
+/* -----------------------------------------------------------
+   TARJETAS KPI DEL DASHBOARD
+   ----------------------------------------------------------- */
+.tarjetas-kpi {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.tarjeta-kpi {
+  flex: 1 1 200px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.tarjeta-kpi-icono {
+  font-size: 1.8rem;
+}
+
+.tarjeta-kpi-titulo {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6c757d;
+  text-transform: uppercase;
+}
+
+.tarjeta-kpi-valor {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+}

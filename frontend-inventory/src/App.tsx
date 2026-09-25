@@ -16,6 +16,8 @@ import { FormularioCliente } from "./clients/pages/FormularioCliente";
 import ListaUsuarios from "./users/pages/ListaUsuarios";
 import FormularioUsuario from "./users/pages/FormularioUsuario";
 
+import { DashboardPage } from "./dashboard/pages/DashboardPage";
+
 function App() {
   return (
     <Routes>
@@ -29,6 +31,16 @@ function App() {
         path="/"
         element={<Navigate to="/login" replace />}
       />
+
+      {/* DASHBOARD */}
+<Route
+  path="/dashboard"
+  element={
+    <ProtectedRoute>
+      <DashboardPage />
+    </ProtectedRoute>
+  }
+/>
 
       {/* CATEGORÍAS */}
       <Route

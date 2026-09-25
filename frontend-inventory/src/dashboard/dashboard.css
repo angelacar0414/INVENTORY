@@ -1,0 +1,41 @@
+/*
+  Este pedacito de CSS es para las tarjetas de indicadores del Dashboard
+  (Productos totales, Stock bajo, Agotados, Entradas hoy, Salidas hoy).
+
+  Lo dejamos separado en este archivo para no tocar de una el CSS global,
+  pero lo que hacemos es pegar esto dentro del archivo de estilos que ya
+  usamos en los demás módulos (el que tiene la clase .tarjeta, .contenedor,
+  .contenido, etc), para que quede todo junto.
+*/
+
+.tarjetas-kpi {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.tarjeta-kpi {
+  flex: 1 1 200px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.tarjeta-kpi-icono {
+  font-size: 1.8rem;
+}
+
+.tarjeta-kpi-titulo {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6c757d;
+  text-transform: uppercase;
+}
+
+.tarjeta-kpi-valor {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
