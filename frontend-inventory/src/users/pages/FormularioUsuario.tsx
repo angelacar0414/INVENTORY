@@ -68,7 +68,7 @@ const FormularioUsuario = () => {
     }
 
     if (!username.trim()) {
-      setError("El username es obligatorio.");
+      setError("El usuario es obligatorio.");
       return false;
     }
 
@@ -222,11 +222,11 @@ const FormularioUsuario = () => {
                     </div>
                   </div>
 
-                  {/* Username y correo electrónico. */}
+                  {/* Usuario y correo electrónico. */}
                   <div className="row">
                     <div className="col-md-6 mb-3">
                       <label htmlFor="username" className="form-label">
-                        Username
+                        Usuario
                       </label>
 
                       <input
