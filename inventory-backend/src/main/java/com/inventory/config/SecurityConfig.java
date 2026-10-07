@@ -227,6 +227,48 @@ public class SecurityConfig {
 
                 /*
                  * ==============================
+                 * MÓDULO MOVIMIENTOS
+                 * ==============================
+                 *
+                 * Administradores y operadores pueden consultar
+                 * el historial de movimientos.
+                 */
+                .requestMatchers(
+                    HttpMethod.GET,
+                    "/api/v1/movimientos/**"
+                )
+                .hasAnyRole("ADMINISTRADOR", "OPERADOR")
+
+                /*
+                 * Registrar entradas y salidas:
+                 * ADMINISTRADOR y OPERADOR (el operador es quien
+                 * registra las operaciones diarias del inventario).
+                 */
+                .requestMatchers(
+                    HttpMethod.POST,
+                    "/api/v1/movimientos/**"
+                )
+                .hasAnyRole("ADMINISTRADOR", "OPERADOR")
+
+                /*
+                 * El historial de movimientos nunca se modifica ni
+                 * se elimina (RNF-013). Se bloquean PUT y DELETE para
+                 * todos los roles.
+                 */
+                .requestMatchers(
+                    HttpMethod.PUT,
+                    "/api/v1/movimientos/**"
+                )
+                .denyAll()
+
+                .requestMatchers(
+                    HttpMethod.DELETE,
+                    "/api/v1/movimientos/**"
+                )
+                .denyAll()
+
+                /*
+                 * ==============================
                  * MÓDULO USUARIOS
                  * ==============================
                  *

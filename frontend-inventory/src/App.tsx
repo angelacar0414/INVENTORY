@@ -49,6 +49,19 @@ import { ListaProductos } from "./products/pages/ListaProductos";
 import { FormularioProducto } from "./products/pages/FormularioProducto";
 
 /**
+ * Páginas del módulo Movimientos.
+ *
+ * ListaMovimientos:
+ * muestra el historial de entradas y salidas.
+ *
+ * FormularioMovimiento:
+ * permite registrar una entrada o una salida
+ * (el tipo se indica mediante la propiedad "tipo").
+ */
+import { ListaMovimientos } from "./movements/pages/ListaMovimientos";
+import { FormularioMovimiento } from "./movements/pages/FormularioMovimiento";
+
+/**
  * COMPONENTE PRINCIPAL DE RUTAS
  * -----------------------------
  *
@@ -209,6 +222,44 @@ function App() {
         element={
           <ProtectedRoute>
             <FormularioProducto />
+          </ProtectedRoute>
+        }
+      />
+
+
+      {/* =====================================================
+          MOVIMIENTOS
+          ===================================================== */}
+
+      {/* Historial de entradas y salidas. */}
+      <Route
+        path="/movimientos"
+        element={
+          <ProtectedRoute>
+            <ListaMovimientos />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Registrar una entrada de inventario.
+          La propiedad "key" obliga a React a crear un formulario
+          nuevo al pasar de entrada a salida, para que no se
+          conserven los datos escritos. */}
+      <Route
+        path="/movimientos/entrada"
+        element={
+          <ProtectedRoute>
+            <FormularioMovimiento key="entrada" tipo="ENTRADA" />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Registrar una salida de inventario. */}
+      <Route
+        path="/movimientos/salida"
+        element={
+          <ProtectedRoute>
+            <FormularioMovimiento key="salida" tipo="SALIDA" />
           </ProtectedRoute>
         }
       />
