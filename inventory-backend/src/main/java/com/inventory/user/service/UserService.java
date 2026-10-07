@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.inventory.auth.UsuarioEntity;
 import com.inventory.auth.UsuarioRepository;
+import com.inventory.exception.DuplicateResourceException;
+import com.inventory.exception.ResourceNotFoundException;
 import com.inventory.user.dto.UserCreateDTO;
 import com.inventory.user.dto.UserDTO;
 import com.inventory.user.mapper.UserMapper;
@@ -63,6 +65,12 @@ public class UserService {
      *
      * La contraseña se almacena utilizando BCrypt.
      *
+     * Antes lanzaba RuntimeException, pero el GlobalExceptionHandler
+     * responde esos casos con un mensaje genérico ("Ocurrió un error
+     * inesperado en el servidor"), así que el usuario nunca veía el
+     * motivo real. Al usar DuplicateResourceException, el manejador
+     * global sí devuelve el mensaje específico con código 409.
+     *
      * @param dto información del nuevo usuario
      * @return usuario creado en formato DTO
      */
@@ -70,14 +78,14 @@ public class UserService {
 
         // Verifica que el username no esté registrado.
         if (usuarioRepository.existsByUsername(dto.getUsername())) {
-            throw new RuntimeException(
+            throw new DuplicateResourceException(
                     "El username ya está registrado"
             );
         }
 
         // Verifica que el correo electrónico no esté registrado.
         if (usuarioRepository.existsByEmail(dto.getEmail())) {
-            throw new RuntimeException(
+            throw new DuplicateResourceException(
                     "El correo electrónico ya está registrado"
             );
         }
@@ -137,13 +145,13 @@ public class UserService {
      *
      * @param id identificador del usuario
      * @return usuario encontrado en formato DTO
-     * @throws RuntimeException si el usuario no existe
+     * @throws ResourceNotFoundException si el usuario no existe
      */
     public UserDTO buscarPorId(Long id) {
 
         UsuarioEntity usuario = usuarioRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Usuario no encontrado"
                         )
                 );
@@ -168,7 +176,7 @@ public class UserService {
 
         UsuarioEntity usuario = usuarioRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Usuario no encontrado"
                         )
                 );
@@ -198,7 +206,7 @@ public class UserService {
 
         UsuarioEntity usuario = usuarioRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Usuario no encontrado"
                         )
                 );
@@ -226,7 +234,7 @@ public class UserService {
 
         UsuarioEntity usuario = usuarioRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Usuario no encontrado"
                         )
                 );
