@@ -13,8 +13,8 @@ Categorías | IMPLEMENTADO
 Proveedores | IMPLEMENTADO
 Usuarios | IMPLEMENTADO
 Clientes | IMPLEMENTADO
-Productos | PENDIENTE
-Movimientos | PENDIENTE
+Productos | IMPLEMENTADO
+Movimientos | IMPLEMENTADO
 Dashboard | IMPLEMENTADO
 Reportes | PENDIENTE
 
@@ -226,7 +226,61 @@ clients/pages/FormularioCliente.tsx — permite crear y editar clientes utilizan
 
 -----------------------------------------------------------------------------------------
 
-## MODULO 6: DASHBOARD (FRONTEND)
+## MODULO 6: PRODUCTOS (FRONTEND)
+
+Módulo terminado. Sigue el mismo patrón utilizado en los demás módulos:
+
+- `products/types/IProducto.ts` — define la estructura de un Producto y del formulario de creación/edición.
+- `products/services/productoService.ts` — contiene las peticiones mediante Axios al Backend.
+- `products/pages/ListaProductos.tsx` — muestra la tabla de productos y permite realizar búsquedas y gestionar su estado.
+- `products/pages/FormularioProducto.tsx` — permite crear y editar productos utilizando el mismo formulario.
+
+El módulo se encuentra integrado con el Backend mediante la API REST correspondiente. Incluye validaciones de código único, stock mínimo y muestra el estado automático del producto (DISPONIBLE, AGOTADO, INACTIVO).
+
+-----------------------------------------------------------------------------------------
+
+## MODULO 7: MOVIMIENTOS (FRONTEND)
+
+El módulo de Movimientos permite registrar entradas y salidas del inventario, manteniendo un historial permanente e inmutable.
+
+Actualmente se encuentran implementadas las siguientes funcionalidades:
+
+- Registrar entradas de inventario.
+- Registrar salidas de inventario con asignación de cliente.
+- Consultar el historial de entradas y salidas.
+- Búsqueda por código o nombre de producto.
+- Filtrado por tipo de movimiento (entrada o salida).
+- Paginación del historial.
+- Validación en tiempo real de stock disponible.
+
+### Estructura
+
+movements/
+├── pages/
+│   ├── ListaMovimientos.tsx (tabla + historial)
+│   └── FormularioMovimiento.tsx (crear entrada o salida)
+├── services/
+│   └── movimientoService.ts (llamadas Axios al Backend)
+└── types/
+    └── IMovimiento.ts (interfaces TypeScript)
+
+### Rutas
+
+- `/movimientos` — historial de movimientos
+- `/movimientos/entrada` — registrar entrada
+- `/movimientos/salida` — registrar salida
+
+### Detalles específicos
+
+- `ListaMovimientos.tsx` utiliza `useEffect` para solicitar el historial al Backend y permite búsqueda y filtrado.
+- `FormularioMovimiento.tsx` se utiliza tanto para registrar entradas como salidas, con un parámetro `tipo` que determina su comportamiento.
+- Para salidas, se requiere seleccionar un cliente y se valida que el stock sea suficiente.
+- El historial es permanente: no se puede editar ni eliminar movimientos registrados.
+- Se muestra el stock antes y después de cada movimiento para verificar el impacto en el inventario.
+
+-----------------------------------------------------------------------------------------
+
+## MODULO 8: DASHBOARD (FRONTEND)
 
 El módulo de Dashboard es la pantalla principal del sistema, la que se muestra apenas iniciamos sesión. A diferencia de los demás módulos, no tiene formulario de creación ni edición: solo muestra un resumen del estado del inventario.
 
@@ -254,7 +308,7 @@ dashboard/
 
 - `DashboardPage.tsx` utiliza `useEffect` para solicitar el resumen al Backend cuando se abre la página.
 - `dashboardService.ts` realiza la petición mediante Axios a `http://localhost:8080/api/v1/dashboard`.
-- Mientras los módulos de Productos y Movimientos no estén desarrollados, los indicadores relacionados con estos se muestran en cero, ya que todavía no existe información que consultar.
+- Los indicadores de productos y movimientos se actualizan automáticamente cuando se registran cambios en el inventario.
 
   -----------------------------------------------------
 
@@ -268,6 +322,8 @@ Actualmente se encuentran implementados y funcionales los módulos de:
 - Categorías
 - Proveedores
 - Clientes
+- Productos
+- Movimientos
 - Dashboard
 
-Los módulos de Productos, Movimientos y Reportes serán desarrollados posteriormente de acuerdo con los requisitos y el alcance definido para INVENTORY.
+El módulo de Reportes será desarrollado posteriormente de acuerdo con los requisitos y el alcance definido para INVENTORY.

@@ -174,6 +174,79 @@ repository
 entity
 dto
 ----------------------------------------------------------------------
+## Módulo: Productos
+
+El módulo de productos permite administrar el catálogo de productos del inventario con control automático de estado según el stock disponible.
+
+Actualmente se encuentran implementadas funcionalidades para:
+
+Crear productos con código único.
+Consultar productos.
+Actualizar productos.
+Desactivar productos.
+Reactivar productos.
+Buscar productos por código o nombre.
+Control automático de estado: DISPONIBLE, AGOTADO, INACTIVO.
+Validación de stock mínimo.
+
+El módulo utiliza una estructura separada de:
+
+controller
+service
+repository
+entity
+dto
+
+Endpoints
+POST   /api/v1/productos
+GET    /api/v1/productos
+GET    /api/v1/productos/{id}
+PUT    /api/v1/productos/{id}
+DELETE /api/v1/productos/{id}
+PUT    /api/v1/productos/{id}/reactivar
+
+----------------------------------------------------------------------
+## Módulo: Movimientos
+
+El módulo de movimientos permite registrar y mantener un historial permanente de todas las entradas y salidas del inventario.
+
+Actualmente se encuentran implementadas funcionalidades para:
+
+Registrar entradas de inventario.
+Registrar salidas de inventario.
+Consultar el historial de movimientos.
+Buscar movimientos por producto.
+Filtrar movimientos por tipo (entrada o salida).
+Validación de cantidad disponible.
+Cálculo automático de stock anterior y posterior.
+Registro automático de usuario y fecha.
+
+El módulo utiliza una estructura separada de:
+
+controller
+service
+repository
+entity
+dto
+validator
+exception handler
+
+Validaciones específicas del módulo:
+
+Cantidad debe ser un número positivo.
+Stock suficiente para salidas.
+Cliente obligatorio en salidas.
+Producto y usuario activos.
+
+Endpoints
+GET    /api/v1/movimientos (con filtros opcionales de criterio y tipo)
+GET    /api/v1/movimientos/{id}
+POST   /api/v1/movimientos/entrada
+POST   /api/v1/movimientos/salida
+
+El acceso a los endpoints de movimientos está restringido a los roles ADMINISTRADOR y OPERADOR. El historial no se puede editar ni eliminar (operaciones PUT y DELETE están deshabilitadas por seguridad).
+
+----------------------------------------------------------------------
 Seguridad
 
 El Backend utiliza Spring Security para controlar el acceso a los diferentes recursos de la API.
@@ -249,6 +322,8 @@ Autenticación.
 Usuarios.
 Categorías.
 Proveedores.
-clientes
+Clientes.
+Productos.
+Movimientos.
 
 Los módulos restantes del sistema serán desarrollados progresivamente de acuerdo con los requisitos y el alcance definido para INVENTORY.
