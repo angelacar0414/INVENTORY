@@ -23,7 +23,7 @@ export function Sidebar() {
   const rol = sessionStorage.getItem("rol") || "";
 
   const opciones = [
-    { texto: "Dashboard", ruta: "/" },
+    { texto: "Dashboard", ruta: "/dashboard" },
     { texto: "Usuarios", ruta: "/usuarios" },
     { texto: "Categorías", ruta: "/categorias" },
     { texto: "Productos", ruta: "/productos" },
