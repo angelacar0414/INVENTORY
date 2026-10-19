@@ -36,7 +36,10 @@ frontend-inventory/
     ├── services/
     │   └── api.ts (instancia de Axios con la URL base del Backend)
     ├── components/ (piezas reutilizables)
-    │   ├── Sidebar.tsx (menú lateral con el logo, el usuario y los módulos)
+    │   ├── Sidebar.tsx (menú lateral con el logo y los módulos; también monta la barra superior)
+    │   ├── Topbar.tsx (barra superior: saludo, buscador y menú del usuario)
+    │   ├── resumenPerfil.ts (guarda el nombre del usuario para la barra superior)
+    │   ├── useCerrarSesion.ts (cierre de sesión compartido por el menú lateral y la barra)
     │   ├── LogoInventory.tsx (logo de la caja con check en SVG)
     │   ├── IconoUsuario.tsx (icono de usuario del login en SVG)
     │   ├── Iconos.tsx (conjunto de iconos SVG de línea)
@@ -387,7 +390,7 @@ profile/
 
 ### Rutas
 
-- `/perfil` — mi perfil (se abre desde la opción "Mi perfil" del menú lateral)
+- `/perfil` — mi perfil (se abre desde el menú del usuario en la barra superior)
 
 ### Detalles específicos
 
@@ -406,12 +409,23 @@ Para que todos los módulos se vean y se comporten igual, las piezas que se repi
 
 Componente | Para qué sirve
 --- | ---
-`Sidebar.tsx` | Menú lateral de todas las pantallas internas. Muestra el logo, el usuario con su rol, los módulos (incluido "Mi perfil") y el botón para cerrar sesión.
+`Sidebar.tsx` | Menú lateral de todas las pantallas internas. Muestra el logo, los módulos y el botón para cerrar sesión. También monta la barra superior, para que aparezca en todos los módulos sin editar cada página.
+`Topbar.tsx` | Barra superior fija con saludo, buscador de productos y menú del usuario (avatar con iniciales, nombre y rol; opciones "Mi perfil" y "Cerrar sesión").
 `LogoInventory.tsx` | Logo de la caja con el check, dibujado en SVG. Se puede mostrar con o sin la palabra "Inventory" y en cualquier tamaño.
 `IconoUsuario.tsx` | Icono de usuario (cabeza y hombros) que se muestra en el login.
 `Iconos.tsx` | Conjunto de iconos SVG de línea (paquete, capas, camión, personas, intercambio, alerta, entrada, salida, gráfica, entre otros). Reemplazan a los emojis.
 `TarjetaKpi.tsx` | Tarjeta de indicador con icono, título y valor. Se usa en el Dashboard y en Reportes y puede funcionar como enlace.
 `Paginacion.tsx` | Hook `usePaginacion` y componente `Paginacion`, con 10 registros por página en las listas.
+
+### Barra superior
+
+La barra azul de arriba (`Topbar.tsx`) se muestra en todas las pantallas internas y tiene tres partes:
+
+- **Saludo:** "Hola" con el nombre de pila del usuario.
+- **Buscador de productos:** al escribir un código o nombre y presionar Enter, navega a `/productos?buscar=texto`. `ListaProductos.tsx` lee ese parámetro con `useSearchParams` y muestra directamente los resultados. Si el buscador se envía vacío, se muestra la lista completa.
+- **Menú del usuario:** avatar con las iniciales, nombre completo y rol. Al hacer clic se abre un menú con "Mi perfil" y "Cerrar sesión". Se cierra al hacer clic afuera o al presionar Escape.
+
+El nombre completo se consulta una sola vez a `GET /api/v1/perfil` y se guarda en `sessionStorage` (`resumenPerfil.ts`) para no repetir la petición en cada pantalla. Cuando el usuario edita sus datos en "Mi perfil", la página lanza un evento y la barra se actualiza al instante.
 
 ### Colores
 

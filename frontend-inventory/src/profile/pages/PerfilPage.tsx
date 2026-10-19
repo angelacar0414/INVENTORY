@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 
+import { guardarResumenPerfil } from "../../components/resumenPerfil";
 import { Sidebar } from "../../components/Sidebar";
 import { perfilService } from "../services/perfilService";
 import type { IPerfil } from "../types/IPerfil";
@@ -86,6 +87,13 @@ export function PerfilPage() {
         email: email.trim(),
       });
       mostrar(actualizado);
+      // Avisamos a la barra superior para que muestre el nombre nuevo.
+      guardarResumenPerfil({
+        username: actualizado.username,
+        nombre: actualizado.nombre,
+        apellido: actualizado.apellido,
+        email: actualizado.email,
+      });
       setExitoDatos("Tus datos se actualizaron correctamente.");
     } catch (error: any) {
       setErrorDatos(

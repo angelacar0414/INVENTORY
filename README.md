@@ -40,7 +40,7 @@ El sistema está enfocado exclusivamente en la gestión y control de inventarios
 - **Dashboard:** Pantalla principal con alerta de reposición, totales (productos, categorías, proveedores, clientes y movimientos), actividad del día, estado del inventario, últimos movimientos y accesos rápidos según el rol.
 - **Reportes:** Reportes de productos y de movimientos con filtros, visualización en pantalla y exportación a PDF (con gráficas) y Excel. Solo para el rol ADMINISTRADOR.
 - **Perfil:** Consulta y actualización de los datos personales y cambio de contraseña del usuario con sesión activa.
-- **Interfaz:** Logo de Inventory en el menú lateral y en el login, iconos SVG propios (sin emojis) y un estilo visual unificado en todos los módulos.
+- **Interfaz:** Logo de Inventory en el menú lateral y en el login, barra superior con buscador de productos y menú de usuario, iconos SVG propios (sin emojis) y un estilo visual unificado en todos los módulos.
 
 ---
 
@@ -284,6 +284,8 @@ PUT    /api/v1/perfil
 PUT    /api/v1/perfil/contrasena
 ```
 
+Se abre desde el menú del usuario en la barra superior. Si el usuario cambia su nombre, la barra se actualiza sin recargar la página.
+
 **Restricción:** Acceso para cualquier usuario autenticado (ADMINISTRADOR y OPERADOR).
 
 ---
@@ -293,6 +295,7 @@ PUT    /api/v1/perfil/contrasena
 Todas las pantallas internas comparten la misma identidad visual para que el sistema se vea como una sola aplicación.
 
 - **Logo:** la caja con el check de Inventory aparece en el menú lateral de todos los módulos (incluido el Dashboard) y en la pantalla de inicio de sesión.
+- **Barra superior:** aparece en todas las pantallas internas. Incluye un saludo, un buscador de productos (al enviar, abre Productos con el texto ya filtrado) y el menú del usuario, con avatar de iniciales, nombre y rol. Desde ese menú se accede a "Mi perfil" y se cierra la sesión.
 - **Inicio de sesión:** el logo completo a la izquierda y, a la derecha, el formulario con un icono de usuario dibujado en SVG.
 - **Iconos:** se dibujaron como SVG de línea (`components/Iconos.tsx`), por lo que no dependen de emojis ni de librerías externas.
 - **Colores con significado:** azul para entradas y acciones principales, naranja para salidas y avisos, verde para disponible, rojo para agotado o error y gris para información neutra.
@@ -374,7 +377,7 @@ INVENTORY/
 │       ├── auth/
 │       ├── categories/
 │       ├── clients/
-│       ├── components/ (Sidebar, LogoInventory, IconoUsuario, Iconos, TarjetaKpi, Paginacion)
+│       ├── components/ (Sidebar, Topbar, LogoInventory, IconoUsuario, Iconos, TarjetaKpi, Paginacion)
 │       ├── dashboard/
 │       ├── movements/
 │       ├── products/

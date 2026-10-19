@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 import { Paginacion, usePaginacion } from "../../components/Paginacion";
 import { Sidebar } from "../../components/Sidebar";
@@ -31,8 +31,13 @@ export function ListaProductos() {
   // Lista de productos que se muestran actualmente.
   const [productos, setProductos] = useState<IProducto[]>([]);
 
+  // Texto que llega desde el buscador de la barra superior
+  // (/productos?buscar=texto). Si no hay, queda vacío.
+  const [parametros] = useSearchParams();
+  const buscarDesdeBarra = parametros.get("buscar") || "";
+
   // Texto utilizado para realizar búsquedas.
-  const [criterio, setCriterio] = useState("");
+  const [criterio, setCriterio] = useState(buscarDesdeBarra);
 
   // Indica si se están mostrando productos activos
   // o todos los productos.
@@ -101,8 +106,15 @@ export function ListaProductos() {
    * "Mostrar todos".
    */
   useEffect(() => {
-    cargarProductos();
-  }, [mostrarTodos]);
+    if (buscarDesdeBarra) {
+      // Llegamos desde el buscador de la barra superior: mostramos
+      // directamente los resultados de esa búsqueda.
+      buscarProductos(buscarDesdeBarra);
+    } else {
+      setCriterio("");
+      cargarProductos();
+    }
+  }, [mostrarTodos, buscarDesdeBarra]);
 
   /**
    * BUSCAR PRODUCTOS

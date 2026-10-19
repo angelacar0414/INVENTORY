@@ -570,3 +570,232 @@ body {
   letter-spacing: -0.5px;
   line-height: 1;
 }
+
+
+/* ===========================================================
+   BARRA SUPERIOR (v1.3)
+   Fija arriba en todas las pantallas internas. El contenido se
+   baja con padding-top para que la barra no lo tape.
+   =========================================================== */
+.contenido {
+  padding-top: 92px;
+}
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 220px;
+  right: 0;
+  height: 68px;
+  z-index: 1020;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 32px;
+  color: #ffffff;
+  background: linear-gradient(90deg, #0b79c4 0%, #2563eb 100%);
+  box-shadow: 0 2px 8px rgba(15, 27, 61, 0.18);
+}
+
+.topbar-saludo {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.topbar-saludo strong {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.topbar-saludo small {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+/* Buscador */
+.topbar-busqueda {
+  position: relative;
+  flex: 1;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.topbar-busqueda input {
+  width: 100%;
+  height: 40px;
+  padding: 0 46px 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #1e293b;
+  font-size: 14px;
+  outline: none;
+}
+
+.topbar-busqueda input:focus {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.45);
+}
+
+.topbar-busqueda button {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #2563eb;
+  cursor: pointer;
+}
+
+.topbar-busqueda button:hover {
+  background: #e8f0fe;
+}
+
+/* Menú del usuario */
+.topbar-perfil {
+  position: relative;
+}
+
+.topbar-perfil-boton {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px 4px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.topbar-perfil-boton:hover,
+.topbar-perfil-boton[aria-expanded="true"] {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.topbar-perfil-boton:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.topbar-perfil-texto {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.topbar-perfil-texto strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.topbar-perfil-texto small {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.topbar-avatar {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  background: #ffffff;
+  color: #2563eb;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.topbar-flecha {
+  display: flex;
+  opacity: 0.85;
+}
+
+.topbar-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 250px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #1e293b;
+  box-shadow: 0 12px 28px rgba(15, 27, 61, 0.18);
+}
+
+.topbar-menu-cabecera {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  line-height: 1.3;
+}
+
+.topbar-menu-cabecera strong {
+  font-size: 14px;
+}
+
+.topbar-menu-cabecera span {
+  font-size: 12px;
+  color: #64748b;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topbar-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 16px;
+  border: 0;
+  background: transparent;
+  color: #1e293b;
+  font-size: 14px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.topbar-menu-item:hover,
+.topbar-menu-item:focus-visible {
+  background: #f1f5f9;
+  color: #1e293b;
+  outline: none;
+}
+
+/* Pantallas angostas: se ocultan los textos secundarios */
+@media (max-width: 900px) {
+  .topbar {
+    padding: 0 16px;
+    gap: 12px;
+  }
+
+  .topbar-saludo small,
+  .topbar-perfil-texto {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .topbar-saludo {
+    display: none;
+  }
+}
+
+/* El menú lateral ocupa todo el alto de la pantalla, incluso en las
+   páginas con poco contenido (como Productos con una sola fila). */
+.sidebar {
+  min-height: 100vh;
+}
