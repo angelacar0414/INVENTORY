@@ -70,17 +70,15 @@
    ICONO DE USUARIO
    ========================================================= */
 
-/* Círculo que contiene el icono */
+/* Contenedor del icono de usuario (SVG de contorno) */
 .auth-user-icon {
   width: 120px;
   height: 120px;
-  border: 7px solid white;
-  border-radius: 50%;
   margin: 0 auto 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 58px;
+  color: #dcf5ec;
 }
 
 
@@ -244,7 +242,11 @@
   .auth-user-icon {
     width: 100px;
     height: 100px;
-    font-size: 48px;
+  }
+
+  .auth-user-icon svg {
+    width: 100px;
+    height: 100px;
   }
 
   /* Mantiene espacio para el formulario */

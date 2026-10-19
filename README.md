@@ -37,6 +37,9 @@ El sistema está enfocado exclusivamente en la gestión y control de inventarios
 - **Productos:** CRUD de productos, búsqueda, filtrado, control de estado automático según stock.
 - **Movimientos de Inventario:** Registro de entradas y salidas, historial permanente e inmutable, validaciones de stock.
 - **Clientes:** Gestión de clientes para registros de salida.
+- **Dashboard:** Indicadores generales (productos, categorías, proveedores, clientes, stock bajo, agotados, entradas y salidas del día) y últimos movimientos.
+- **Reportes:** Reportes de productos y de movimientos con filtros, visualización en pantalla y exportación a PDF (con gráficas) y Excel. Solo para el rol ADMINISTRADOR.
+- **Perfil:** Consulta y actualización de los datos personales y cambio de contraseña del usuario con sesión activa.
 
 ---
 
@@ -211,6 +214,71 @@ POST   /api/v1/movimientos/salida   (registrar salida)
 
 ---
 
+## Módulo: Dashboard
+
+Pantalla principal del sistema con un resumen del inventario. Es de solo lectura.
+
+**Indicadores:**
+- Productos, categorías, proveedores y clientes activos
+- Productos con stock bajo y agotados
+- Entradas y salidas del día
+- Últimos movimientos registrados
+
+**Endpoint:**
+```
+GET    /api/v1/dashboard
+```
+
+**Restricción:** Acceso para roles ADMINISTRADOR y OPERADOR.
+
+---
+
+## Módulo: Reportes
+
+Consultas del inventario con exportación a PDF y Excel.
+
+**Características:**
+- Reporte de productos: filtros por estado, proveedor, categoría y stock bajo
+- Reporte de movimientos: filtros por rango de fechas, tipo, producto y cliente
+- Indicadores resumen y tabla de detalle en pantalla
+- Exportación a PDF con gráficas (estado de los productos, entradas y salidas en el tiempo, productos más movidos)
+- Exportación a Excel con hoja de resumen y hoja de datos con filtros
+- El archivo descargado usa los mismos filtros del reporte que se ve en pantalla
+
+**Endpoints:**
+```
+GET    /api/v1/reportes/productos
+GET    /api/v1/reportes/productos/pdf
+GET    /api/v1/reportes/productos/excel
+GET    /api/v1/reportes/movimientos
+GET    /api/v1/reportes/movimientos/pdf
+GET    /api/v1/reportes/movimientos/excel
+```
+
+**Restricción:** Solo acceso para el rol ADMINISTRADOR.
+
+---
+
+## Módulo: Perfil
+
+Cada usuario administra su propia información. El usuario se toma de la sesión, nunca de la URL.
+
+**Características:**
+- Consultar el perfil
+- Actualizar nombre, apellido y correo (el username y el rol no se modifican)
+- Cambiar la contraseña confirmando la actual (mínimo 6 caracteres, almacenada con BCrypt)
+
+**Endpoints:**
+```
+GET    /api/v1/perfil
+PUT    /api/v1/perfil
+PUT    /api/v1/perfil/contrasena
+```
+
+**Restricción:** Acceso para cualquier usuario autenticado (ADMINISTRADOR y OPERADOR).
+
+---
+
 ## Tecnologías Utilizadas
 
 ### Backend
@@ -279,6 +347,8 @@ INVENTORY/
 │       ├── dashboard/
 │       ├── movements/
 │       ├── products/
+│       ├── profile/
+│       ├── reports/
 │       ├── suppliers/
 │       ├── users/
 │       └── ...
@@ -288,9 +358,12 @@ INVENTORY/
 │       ├── category/
 │       ├── client/
 │       ├── config/
+│       ├── dashboard/
 │       ├── exception/
 │       ├── movement/
 │       ├── product/
+│       ├── profile/
+│       ├── report/
 │       ├── supplier/
 │       ├── user/
 │       └── ...
@@ -344,9 +417,7 @@ Pruebas de endpoints mediante Postman:
 ## Estado Actual
 
 **En desarrollo activo:**
-- Dashboard y estadísticas
-- Reportes
-- Exportación a PDF y Excel
+- Pruebas manuales finales y documentación
 
 **Completados:**
 - Autenticación
@@ -356,6 +427,9 @@ Pruebas de endpoints mediante Postman:
 - Clientes
 - Productos
 - Movimientos de Inventario
+- Dashboard
+- Reportes (con exportación a PDF y Excel)
+- Perfil
 
 ---
 
@@ -365,3 +439,6 @@ Pruebas de endpoints mediante Postman:
 - La documentación adicional se encuentra en `docs/` (próximamente)
 - El proyecto sigue las convenciones de arquitectura por capas definidas en la EKB
 - Todos los módulos implementados incluyen validaciones de negocio en Backend y Frontend
+- Las listas de los módulos usan la paginación compartida `components/Paginacion.tsx` (10 registros por página)
+- El Backend registra eventos relevantes (inicio y cierre de sesión, errores de autenticación, excepciones no controladas y errores de base de datos) mediante SLF4J
+- Las respuestas de error siguen el formato `{ success, message, errors }` definido en el SSD

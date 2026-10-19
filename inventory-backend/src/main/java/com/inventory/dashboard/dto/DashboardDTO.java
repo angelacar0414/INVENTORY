@@ -15,6 +15,10 @@ import java.util.List;
 public class DashboardDTO {
 
     private long totalProductos;
+    private long totalCategorias;
+    private long totalProveedores;
+    private long totalClientes;
+    private long totalMovimientos;
     private long stockBajo;
     private long agotados;
     private long entradasHoy;
@@ -24,10 +28,16 @@ public class DashboardDTO {
     public DashboardDTO() {
     }
 
-    public DashboardDTO(long totalProductos, long stockBajo, long agotados,
+    public DashboardDTO(long totalProductos, long totalCategorias,
+                         long totalProveedores, long totalClientes,
+                         long totalMovimientos, long stockBajo, long agotados,
                          long entradasHoy, long salidasHoy,
                          List<MovimientoResumenDTO> ultimosMovimientos) {
         this.totalProductos = totalProductos;
+        this.totalCategorias = totalCategorias;
+        this.totalProveedores = totalProveedores;
+        this.totalClientes = totalClientes;
+        this.totalMovimientos = totalMovimientos;
         this.stockBajo = stockBajo;
         this.agotados = agotados;
         this.entradasHoy = entradasHoy;
@@ -41,6 +51,38 @@ public class DashboardDTO {
 
     public void setTotalProductos(long totalProductos) {
         this.totalProductos = totalProductos;
+    }
+
+    public long getTotalCategorias() {
+        return totalCategorias;
+    }
+
+    public void setTotalCategorias(long totalCategorias) {
+        this.totalCategorias = totalCategorias;
+    }
+
+    public long getTotalProveedores() {
+        return totalProveedores;
+    }
+
+    public void setTotalProveedores(long totalProveedores) {
+        this.totalProveedores = totalProveedores;
+    }
+
+    public long getTotalClientes() {
+        return totalClientes;
+    }
+
+    public void setTotalClientes(long totalClientes) {
+        this.totalClientes = totalClientes;
+    }
+
+    public long getTotalMovimientos() {
+        return totalMovimientos;
+    }
+
+    public void setTotalMovimientos(long totalMovimientos) {
+        this.totalMovimientos = totalMovimientos;
     }
 
     public long getStockBajo() {

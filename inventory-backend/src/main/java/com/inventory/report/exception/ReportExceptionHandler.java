@@ -19,7 +19,7 @@ import java.util.Map;
  * prioridad, igual que el handler de Movimientos, para que el
  * GlobalExceptionHandler (que captura Exception) no lo convierta en 500.
  *
- * Formato de error del proyecto: { success: false, message: "..." }
+ * Formato de error del proyecto (SSD 6.4): { success: false, message: "...", errors: ["..."] }
  */
 @RestControllerAdvice(assignableTypes = ReportController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -48,6 +48,7 @@ public class ReportExceptionHandler {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("success", false);
         body.put("message", mensaje);
+        body.put("errors", java.util.List.of(mensaje));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 }

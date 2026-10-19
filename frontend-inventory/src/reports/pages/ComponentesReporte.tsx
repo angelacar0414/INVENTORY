@@ -21,6 +21,17 @@ export function formatoDinero(valor: number, decimales = 2): string {
   return "$ " + valor.toLocaleString("es-CO", { maximumFractionDigits: decimales });
 }
 
+/**
+ * Versión corta para las tarjetas de indicadores, donde el espacio es
+ * limitado: 12.345.679 se muestra como "$ 12,3 M".
+ */
+export function formatoDineroCorto(valor: number): string {
+  if (Math.abs(valor) >= 1_000_000) {
+    return "$ " + (valor / 1_000_000).toLocaleString("es-CO", { maximumFractionDigits: 1 }) + " M";
+  }
+  return formatoDinero(valor, 0);
+}
+
 export function formatoFechaHora(fechaIso: string): string {
   return new Date(fechaIso).toLocaleString("es-CO", {
     day: "2-digit",
@@ -44,66 +55,20 @@ export function aTextoFecha(fecha: Date): string {
 /* ============================================================
    TARJETA DE INDICADOR
    ============================================================
-   Usa las mismas clases del Dashboard (tarjeta-kpi...).
+   Se reutiliza la tarjeta compartida (components/TarjetaKpi.tsx),
+   la misma del Dashboard, para que se vean igual.
    ============================================================ */
 
-interface PropsTarjeta {
-  icono: string;
-  titulo: string;
-  valor: string;
-  // Clase opcional para colorear el valor (por ejemplo text-danger).
-  claseValor?: string;
-}
-
-export function TarjetaIndicador({ icono, titulo, valor, claseValor }: PropsTarjeta) {
-  return (
-    <div className="tarjeta tarjeta-kpi">
-      <span className="tarjeta-kpi-icono">{icono}</span>
-      <div>
-        <p className="tarjeta-kpi-titulo">{titulo}</p>
-        <p className={"tarjeta-kpi-valor " + (claseValor ?? "")}>{valor}</p>
-      </div>
-    </div>
-  );
-}
+export { TarjetaKpi as TarjetaIndicador } from "../../components/TarjetaKpi";
 
 /* ============================================================
    PAGINACIÓN
+   ============================================================
+   Se reutiliza la paginación compartida del proyecto
+   (components/Paginacion.tsx) para no duplicar código.
    ============================================================ */
 
-interface PropsPaginacion {
-  pagina: number;
-  totalPaginas: number;
-  onCambiar: (pagina: number) => void;
-}
-
-export function Paginacion({ pagina, totalPaginas, onCambiar }: PropsPaginacion) {
-  return (
-    <div className="d-flex align-items-center gap-2">
-      <button
-        type="button"
-        className="btn btn-sm btn-outline-secondary"
-        onClick={() => onCambiar(pagina - 1)}
-        disabled={pagina <= 1}
-      >
-        Anterior
-      </button>
-
-      <span className="text-muted">
-        Página {pagina} de {totalPaginas}
-      </span>
-
-      <button
-        type="button"
-        className="btn btn-sm btn-outline-secondary"
-        onClick={() => onCambiar(pagina + 1)}
-        disabled={pagina >= totalPaginas}
-      >
-        Siguiente
-      </button>
-    </div>
-  );
-}
+export { Paginacion } from "../../components/Paginacion";
 
 /* ============================================================
    BOTONES DE DESCARGA

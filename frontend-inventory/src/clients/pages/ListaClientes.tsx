@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Paginacion, usePaginacion } from "../../components/Paginacion";
 import { Sidebar } from "../../components/Sidebar";
 import { clienteService } from "../services/clienteService";
 import type { ICliente } from "../types/ICliente";
@@ -71,6 +72,9 @@ export function ListaClientes() {
       .includes(textoBusqueda.toLowerCase())
   );
 
+  // Paginación de 10 en 10 sobre los resultados filtrados.
+  const paginacion = usePaginacion(clientesFiltrados);
+
   return (
     <div className="contenedor">
       <Sidebar />
@@ -128,7 +132,7 @@ export function ListaClientes() {
                     </td>
                   </tr>
                 ) : (
-                  clientesFiltrados.map((cliente) => (
+                  paginacion.visibles.map((cliente) => (
                     <tr key={cliente.idCliente}>
                       <td>{cliente.idCliente}</td>
                       <td>{cliente.nombre}</td>
@@ -174,6 +178,11 @@ export function ListaClientes() {
               </tbody>
             </table>
           )}
+          <Paginacion
+            pagina={paginacion.pagina}
+            totalPaginas={paginacion.totalPaginas}
+            onCambiar={paginacion.setPagina}
+          />
         </div>
       </div>
     </div>

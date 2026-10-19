@@ -37,13 +37,18 @@ public class DashboardService {
 
     public DashboardDTO obtenerResumen() {
         long totalProductos = contarProductosActivos();
+        long totalCategorias = contarActivos("categoria");
+        long totalProveedores = contarActivos("proveedor");
+        long totalClientes = contarActivos("cliente");
+        long totalMovimientos = contarTodosLosMovimientos();
         long stockBajo = contarProductosStockBajo();
         long agotados = contarProductosAgotados();
         long entradasHoy = contarMovimientosDeHoy("ENTRADA");
         long salidasHoy = contarMovimientosDeHoy("SALIDA");
         List<MovimientoResumenDTO> ultimosMovimientos = obtenerUltimosMovimientos(5);
 
-        return new DashboardDTO(totalProductos, stockBajo, agotados,
+        return new DashboardDTO(totalProductos, totalCategorias,
+                totalProveedores, totalClientes, totalMovimientos, stockBajo, agotados,
                 entradasHoy, salidasHoy, ultimosMovimientos);
     }
 
@@ -55,6 +60,33 @@ public class DashboardService {
         } catch (Exception e) {
             // Todavía no existe la tabla producto (el módulo de Productos
             // no está armado), así que por ahora dejamos el contador en 0.
+            return 0;
+        }
+    }
+
+    /**
+     * Cuenta los registros activos de una tabla (RF-027: totales de
+     * categorías, proveedores y clientes).
+     *
+     * El nombre de la tabla no viene del usuario: solo lo llama este mismo
+     * Service con textos fijos, por eso es seguro concatenarlo en la consulta.
+     */
+    private long contarActivos(String tabla) {
+        try {
+            String sql = "SELECT COUNT(*) FROM " + tabla + " WHERE activo = true";
+            Long total = jdbcTemplate.queryForObject(sql, Long.class);
+            return total == null ? 0 : total;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    /** Total histórico de movimientos registrados (entradas y salidas). */
+    private long contarTodosLosMovimientos() {
+        try {
+            Long total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM movimiento", Long.class);
+            return total == null ? 0 : total;
+        } catch (Exception e) {
             return 0;
         }
     }

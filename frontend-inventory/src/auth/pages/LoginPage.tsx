@@ -3,6 +3,7 @@ import type { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { authService } from "../services/authService";
+import { IconoUsuario } from "../../components/IconoUsuario";
 
 // Importamos el logo de INVENTORY desde la carpeta assets.
 // La ruta parte desde pages/ y sube a auth/ y luego a src/.
@@ -184,17 +185,9 @@ export function LoginPage() {
       <div className="auth-panel">
         <div className="auth-card">
 
-          {/* ------------------------------------------------
-              ICONO DE USUARIO
-              ------------------------------------------------
-              Por ahora utilizamos un emoji como icono.
-              Más adelante podemos reemplazarlo por un
-              icono de Bootstrap si queremos una apariencia
-              más profesional.
-              ------------------------------------------------ */}
-
+          {/* Icono de usuario (SVG de contorno, ya no es un emoji) */}
           <div className="auth-user-icon">
-            👤
+            <IconoUsuario tamano={120} />
           </div>
 
           {/* Título principal */}

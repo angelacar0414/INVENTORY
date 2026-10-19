@@ -16,6 +16,7 @@ import {
   Paginacion,
   TarjetaIndicador,
   formatoDinero,
+  formatoDineroCorto,
   formatoEntero,
 } from "./ComponentesReporte";
 
@@ -236,17 +237,17 @@ export function ReporteProductosTab({ proveedores, categorias }: Props) {
         <>
           {/* ---------------- INDICADORES ---------------- */}
           <div className="tarjetas-kpi mb-3">
-            <TarjetaIndicador icono="📦" titulo="Productos" valor={formatoEntero(resumen.totalProductos)} />
-            <TarjetaIndicador icono="🧮" titulo="Unidades en stock" valor={formatoEntero(resumen.unidadesEnStock)} />
-            <TarjetaIndicador icono="💰" titulo="Valor inventario" valor={formatoDinero(resumen.valorInventario, 0)} />
+            <TarjetaIndicador icono="paquete" color="azul" titulo="Productos" valor={formatoEntero(resumen.totalProductos)} />
+            <TarjetaIndicador icono="capas" color="morado" titulo="Unidades en stock" valor={formatoEntero(resumen.unidadesEnStock)} />
+            <TarjetaIndicador icono="dinero" color="verde" titulo="Valor inventario" valor={formatoDineroCorto(resumen.valorInventario)} />
             <TarjetaIndicador
-              icono="⚠️"
+              icono="alerta" color="naranja"
               titulo="Stock bajo"
               valor={formatoEntero(resumen.stockBajo)}
               claseValor={resumen.stockBajo > 0 ? "text-warning" : ""}
             />
             <TarjetaIndicador
-              icono="⛔"
+              icono="prohibido" color="rojo"
               titulo="Agotados"
               valor={formatoEntero(resumen.agotados)}
               claseValor={resumen.agotados > 0 ? "text-danger" : ""}

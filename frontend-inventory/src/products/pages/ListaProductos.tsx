@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { Paginacion, usePaginacion } from "../../components/Paginacion";
 import { Sidebar } from "../../components/Sidebar";
 import { productoService } from "../services/productoService";
 import type { IProducto } from "../types/IProducto";
@@ -250,6 +251,9 @@ export function ListaProductos() {
     }
   };
 
+  // Paginación de 10 en 10 sobre los productos cargados.
+  const paginacion = usePaginacion(productos);
+
   return (
     <div className="d-flex">
 
@@ -394,7 +398,7 @@ export function ListaProductos() {
 
                   ) : (
 
-                    productos.map((producto) => (
+                    paginacion.visibles.map((producto) => (
 
                       <tr key={producto.idProducto}>
 
@@ -528,6 +532,12 @@ export function ListaProductos() {
                 </tbody>
 
               </table>
+
+              <Paginacion
+                pagina={paginacion.pagina}
+                totalPaginas={paginacion.totalPaginas}
+                onCambiar={paginacion.setPagina}
+              />
 
             </div>
 

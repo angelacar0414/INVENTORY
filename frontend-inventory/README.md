@@ -16,7 +16,8 @@ Clientes | IMPLEMENTADO
 Productos | IMPLEMENTADO
 Movimientos | IMPLEMENTADO
 Dashboard | IMPLEMENTADO
-Reportes | PENDIENTE
+Reportes | IMPLEMENTADO
+Perfil | IMPLEMENTADO
 
 ## Estructura del proyecto
 
@@ -30,7 +31,16 @@ frontend-inventory/
     ├── App.tsx (rutas de la aplicación)
     ├── index.css (estilos globales)
     ├── components/
-    │   └── Sidebar.tsx (menú lateral reutilizable)
+    │   ├── Sidebar.tsx (menú lateral reutilizable)
+    │   └── Paginacion.tsx (paginación reutilizable para las listas)
+    ├── profile/ (módulo Perfil)
+    │   ├── pages/
+    │   ├── services/
+    │   └── types/
+    ├── reports/ (módulo Reportes)
+    │   ├── pages/
+    │   ├── services/
+    │   └── types/
     ├── auth/ (módulo de Autenticación)
     │   ├── pages/
     │   ├── services/
@@ -312,6 +322,62 @@ dashboard/
 
   -----------------------------------------------------
 
+## MODULO 9: REPORTES (FRONTEND)
+
+El módulo de Reportes permite consultar el inventario y sus movimientos con filtros, y descargarlos en PDF o Excel. Solo está disponible para el rol ADMINISTRADOR.
+
+Actualmente se encuentra implementado:
+
+- Reporte de productos con filtros por estado, proveedor, categoría y stock bajo.
+- Reporte de movimientos con filtros por rango de fechas, tipo, producto y cliente.
+- Indicadores resumen, tabla de detalle, búsqueda y paginación.
+- Descarga en PDF (con gráficas) y en Excel con los filtros del último reporte generado.
+
+### Estructura
+
+reports/
+├── pages/
+│   ├── ReportesPage.tsx (pestañas Productos y Movimientos)
+│   ├── ReporteProductosTab.tsx
+│   ├── ReporteMovimientosTab.tsx
+│   └── ComponentesReporte.tsx (piezas compartidas)
+├── services/
+│   └── reporteService.ts (llamadas Axios y descarga de archivos)
+└── types/
+    └── IReporte.ts (interfaces TypeScript)
+
+### Rutas
+
+- `/reportes` — pantalla de reportes
+
+-----------------------------------------------------------------------------------------
+
+## MODULO 10: PERFIL (FRONTEND)
+
+El módulo de Perfil permite que cada usuario consulte y actualice su información personal y cambie su contraseña. Está disponible para los roles ADMINISTRADOR y OPERADOR.
+
+### Estructura
+
+profile/
+├── pages/
+│   └── PerfilPage.tsx (datos personales y cambio de contraseña)
+├── services/
+│   └── perfilService.ts (llamadas Axios al Backend)
+└── types/
+    └── IPerfil.ts (interfaces TypeScript)
+
+### Rutas
+
+- `/perfil` — mi perfil
+
+### Detalles específicos
+
+- El username y el rol se muestran, pero no se pueden modificar.
+- El cambio de contraseña pide la contraseña actual y una confirmación de la nueva (mínimo 6 caracteres).
+- El Backend identifica al usuario por la sesión, por lo que nadie puede modificar el perfil de otra persona.
+
+  -----------------------------------------------------
+
 
 ## Estado actual del Frontend
 
@@ -325,5 +391,7 @@ Actualmente se encuentran implementados y funcionales los módulos de:
 - Productos
 - Movimientos
 - Dashboard
+- Reportes
+- Perfil
 
-El módulo de Reportes será desarrollado posteriormente de acuerdo con los requisitos y el alcance definido para INVENTORY.
+Todas las listas de los módulos cuentan con paginación mediante el componente compartido `components/Paginacion.tsx`.

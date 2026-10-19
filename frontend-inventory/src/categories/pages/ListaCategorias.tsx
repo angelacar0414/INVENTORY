@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Paginacion, usePaginacion } from "../../components/Paginacion";
 import { Sidebar } from "../../components/Sidebar";
 import { categoriaService } from "../services/categoriaService";
 import type { ICategoria } from "../types/ICategoria";
@@ -53,6 +54,9 @@ export function ListaCategorias() {
       setCargando(false);
     }
   }
+
+  // Paginación de 10 en 10 sobre las categorías cargadas.
+  const paginacion = usePaginacion(categorias);
 
   async function manejarDesactivar(id: number) {
     const confirmado = window.confirm("¿Desactivar esta categoría?");
@@ -133,7 +137,7 @@ export function ListaCategorias() {
                     </td>
                   </tr>
                 ) : (
-                  categorias.map((categoria) => (
+                  paginacion.visibles.map((categoria) => (
                     <tr key={categoria.id}>
                       <td>{categoria.id}</td>
                       <td>{categoria.nombre}</td>
@@ -177,6 +181,11 @@ export function ListaCategorias() {
               </tbody>
             </table>
           )}
+          <Paginacion
+            pagina={paginacion.pagina}
+            totalPaginas={paginacion.totalPaginas}
+            onCambiar={paginacion.setPagina}
+          />
         </div>
       </div>
     </div>

@@ -1,7 +1,8 @@
-// Con estas interfaces describimos la forma exacta de lo que nos devuelve
-// el endpoint GET /api/v1/dashboard. Las separamos igual que en Backend:
-// una interfaz para cada movimiento resumido y otra para el resumen
-// completo que arma las tarjetas de arriba.
+/**
+ * TIPOS DEL MÓDULO DASHBOARD
+ * --------------------------
+ * Deben coincidir con los DTO del Backend (paquete com.inventory.dashboard.dto).
+ */
 
 export interface IMovimientoResumen {
   fecha: string;
@@ -14,6 +15,10 @@ export interface IMovimientoResumen {
 
 export interface IDashboardResumen {
   totalProductos: number;
+  totalCategorias: number;
+  totalProveedores: number;
+  totalClientes: number;
+  totalMovimientos: number;
   stockBajo: number;
   agotados: number;
   entradasHoy: number;

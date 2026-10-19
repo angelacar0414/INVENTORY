@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Paginacion, usePaginacion } from "../../components/Paginacion";
 import { Sidebar } from "../../components/Sidebar";
 import usuarioService from "../services/usuarioService";
 import { IUsuario } from "../types/IUsuario";
@@ -87,6 +88,9 @@ const ListaUsuarios = () => {
     return texto.includes(busqueda.toLowerCase());
   });
 
+  // Paginación de 10 en 10 sobre los usuarios filtrados.
+  const paginacion = usePaginacion(usuariosFiltrados);
+
   return (
     <div className="d-flex">
       {/* Menú lateral principal del sistema. */}
@@ -168,7 +172,7 @@ const ListaUsuarios = () => {
                     </thead>
 
                     <tbody>
-                      {usuariosFiltrados.map((usuario) => (
+                      {paginacion.visibles.map((usuario) => (
                         <tr key={usuario.idUsuario}>
                           <td>{usuario.idUsuario}</td>
                           <td>{usuario.nombre}</td>
@@ -227,6 +231,12 @@ const ListaUsuarios = () => {
                       ))}
                     </tbody>
                   </table>
+
+                <Paginacion
+                  pagina={paginacion.pagina}
+                  totalPaginas={paginacion.totalPaginas}
+                  onCambiar={paginacion.setPagina}
+                />
                 </div>
               )}
 

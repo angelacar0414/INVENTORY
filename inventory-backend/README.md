@@ -247,6 +247,95 @@ POST   /api/v1/movimientos/salida
 El acceso a los endpoints de movimientos está restringido a los roles ADMINISTRADOR y OPERADOR. El historial no se puede editar ni eliminar (operaciones PUT y DELETE están deshabilitadas por seguridad).
 
 ----------------------------------------------------------------------
+## Módulo: Dashboard
+
+El módulo de Dashboard entrega los indicadores generales del inventario. Es de solo lectura y consulta las tablas mediante JdbcTemplate, sin Entity ni Repository propios.
+
+Indicadores:
+
+Total de productos, categorías, proveedores y clientes activos.
+Productos con stock bajo y agotados.
+Entradas y salidas del día.
+Últimos movimientos registrados.
+
+Endpoint
+GET    /api/v1/dashboard
+
+El acceso está permitido a los roles ADMINISTRADOR y OPERADOR.
+
+----------------------------------------------------------------------
+## Módulo: Reportes
+
+El módulo de reportes permite consultar el inventario con filtros y exportar la información en PDF y Excel.
+
+Actualmente se encuentran implementadas funcionalidades para:
+
+Reporte de productos (filtros por estado, proveedor, categoría y stock bajo).
+Reporte de movimientos (filtros por fechas, tipo, producto y cliente).
+Exportación a PDF con gráficas.
+Exportación a Excel con hoja de resumen y hoja de datos.
+
+El módulo utiliza una estructura separada de:
+
+controller
+service
+repository (consultas con JdbcTemplate y parámetros)
+dto
+validator
+exception handler
+export (generación de PDF, Excel y gráficas)
+
+Librerías utilizadas:
+
+Apache POI (Excel).
+OpenPDF (PDF).
+Java2D para dibujar las gráficas del PDF.
+
+Endpoints
+GET    /api/v1/reportes/productos
+GET    /api/v1/reportes/productos/pdf
+GET    /api/v1/reportes/productos/excel
+GET    /api/v1/reportes/movimientos
+GET    /api/v1/reportes/movimientos/pdf
+GET    /api/v1/reportes/movimientos/excel
+
+El acceso a los endpoints de reportes está restringido al rol ADMINISTRADOR.
+
+----------------------------------------------------------------------
+## Módulo: Perfil
+
+El módulo de perfil permite que cada usuario administre su propia información. El usuario se identifica por la sesión activa, nunca por un identificador enviado en la URL.
+
+Actualmente se encuentran implementadas funcionalidades para:
+
+Consultar el perfil.
+Actualizar nombre, apellido y correo electrónico.
+Cambiar la contraseña confirmando la contraseña actual.
+
+El módulo utiliza una estructura separada de:
+
+controller
+service
+dto
+validator
+exception handler
+
+Validaciones específicas del módulo:
+
+Nombre, apellido y correo obligatorios.
+Formato de correo válido y no utilizado por otro usuario.
+La contraseña actual debe ser correcta.
+La nueva contraseña debe tener al menos 6 caracteres, ser diferente a la actual y coincidir con su confirmación.
+La contraseña se almacena cifrada con BCrypt.
+
+Endpoints
+GET    /api/v1/perfil
+PUT    /api/v1/perfil
+PUT    /api/v1/perfil/contrasena
+
+El acceso está permitido a cualquier usuario autenticado.
+
+----------------------------------------------------------------------
 Seguridad
 
 El Backend utiliza Spring Security para controlar el acceso a los diferentes recursos de la API.
@@ -255,11 +344,20 @@ Actualmente:
 
 Los endpoints de autenticación son de acceso público.
 Los endpoints de usuarios requieren el rol ADMINISTRADOR.
+Los endpoints de reportes requieren el rol ADMINISTRADOR.
 Las contraseñas se almacenan utilizando BCrypt.
 Se utilizan sesiones HTTP para mantener la autenticación.
 La protección CSRF se encuentra deshabilitada para facilitar el funcionamiento de la API REST.
 
 El control de acceso se configura principalmente mediante SecurityConfig.
+
+Registro de eventos y manejo de errores
+
+El Backend registra eventos relevantes mediante SLF4J (inicio y cierre de sesión, errores de autenticación, excepciones no controladas y errores de acceso a la base de datos). Los mensajes técnicos se escriben en la consola del servidor y al cliente solo se le entrega un mensaje claro.
+
+Las respuestas de error siguen el formato:
+
+{ "success": false, "message": "Descripción del error.", "errors": [ ... ] }
 
 Pruebas
 
@@ -325,5 +423,8 @@ Proveedores.
 Clientes.
 Productos.
 Movimientos.
+Dashboard.
+Reportes.
+Perfil.
 
-Los módulos restantes del sistema serán desarrollados progresivamente de acuerdo con los requisitos y el alcance definido para INVENTORY.
+Con estos módulos se completan los definidos en el alcance de INVENTORY 1.0.

@@ -1,5 +1,6 @@
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { authService } from "../auth/services/authService";
+import { LogoInventory } from "./LogoInventory";
 
 // COMPONENTE REUTILIZABLE: Sidebar
 // -----------------------------------
@@ -31,6 +32,7 @@ export function Sidebar() {
     { texto: "Clientes", ruta: "/clientes" },
     { texto: "Movimientos", ruta: "/movimientos" },
     { texto: "Reportes", ruta: "/reportes" },
+    { texto: "Mi perfil", ruta: "/perfil" },
   ];
 
   async function cerrarSesion() {
@@ -51,7 +53,9 @@ export function Sidebar() {
 
   return (
     <div className="sidebar d-flex flex-column">
-      <div className="logo">INVENTORY</div>
+      <div className="logo">
+        <LogoInventory tamano={72} />
+      </div>
 
       {/* ---------------------------------------------------
           BLOQUE DE USUARIO ACTUAL

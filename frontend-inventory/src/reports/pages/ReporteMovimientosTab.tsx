@@ -292,11 +292,11 @@ export function ReporteMovimientosTab({ productos, clientes }: Props) {
         <>
           {/* ---------------- INDICADORES ---------------- */}
           <div className="tarjetas-kpi mb-3">
-            <TarjetaIndicador icono="🔁" titulo="Movimientos" valor={formatoEntero(resumen.totalMovimientos)} />
-            <TarjetaIndicador icono="⬇️" titulo="Entradas (unidades)" valor={formatoEntero(resumen.unidadesEntradas)} />
-            <TarjetaIndicador icono="⬆️" titulo="Salidas (unidades)" valor={formatoEntero(resumen.unidadesSalidas)} />
+            <TarjetaIndicador icono="intercambio" color="azul" titulo="Movimientos" valor={formatoEntero(resumen.totalMovimientos)} />
+            <TarjetaIndicador icono="entrada" color="azul" titulo="Entradas (unidades)" valor={formatoEntero(resumen.unidadesEntradas)} />
+            <TarjetaIndicador icono="salida" color="naranja" titulo="Salidas (unidades)" valor={formatoEntero(resumen.unidadesSalidas)} />
             <TarjetaIndicador
-              icono="⚖️"
+              icono="balanza" color="gris"
               titulo="Balance neto"
               valor={(resumen.balanceNeto > 0 ? "+" : "") + formatoEntero(resumen.balanceNeto)}
               claseValor={resumen.balanceNeto < 0 ? "text-danger" : ""}

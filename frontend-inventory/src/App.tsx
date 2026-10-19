@@ -71,6 +71,15 @@ import { FormularioMovimiento } from "./movements/pages/FormularioMovimiento";
 import { ReportesPage } from "./reports/pages/ReportesPage";
 
 /**
+ * Página del módulo Perfil.
+ *
+ * PerfilPage:
+ * Cada usuario consulta y actualiza su información personal
+ * y cambia su contraseña.
+ */
+import { PerfilPage } from "./profile/pages/PerfilPage";
+
+/**
  * COMPONENTE PRINCIPAL DE RUTAS
  * -----------------------------
  *
@@ -284,6 +293,21 @@ function App() {
         element={
           <ProtectedRoute>
             <ReportesPage />
+          </ProtectedRoute>
+        }
+      />
+
+
+      {/* =====================================================
+          PERFIL
+          ===================================================== */}
+
+      {/* Mi perfil: disponible para Administrador y Operador. */}
+      <Route
+        path="/perfil"
+        element={
+          <ProtectedRoute>
+            <PerfilPage />
           </ProtectedRoute>
         }
       />

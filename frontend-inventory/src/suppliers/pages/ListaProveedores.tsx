@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Paginacion, usePaginacion } from "../../components/Paginacion";
 import { Sidebar } from "../../components/Sidebar";
 import { proveedorService } from "../services/proveedorService";
 import type { IProveedor } from "../types/IProveedor";
@@ -70,6 +71,9 @@ export function ListaProveedores() {
       .includes(textoBusqueda.toLowerCase())
   );
 
+  // Paginación de 10 en 10 sobre los resultados filtrados.
+  const paginacion = usePaginacion(proveedoresFiltrados);
+
   return (
     <div className="contenedor">
       <Sidebar />
@@ -127,7 +131,7 @@ export function ListaProveedores() {
                     </td>
                   </tr>
                 ) : (
-                  proveedoresFiltrados.map((proveedor) => (
+                  paginacion.visibles.map((proveedor) => (
                     <tr key={proveedor.id}>
                       <td>{proveedor.id}</td>
                       <td>{proveedor.nombre}</td>
@@ -173,6 +177,11 @@ export function ListaProveedores() {
               </tbody>
             </table>
           )}
+          <Paginacion
+            pagina={paginacion.pagina}
+            totalPaginas={paginacion.totalPaginas}
+            onCambiar={paginacion.setPagina}
+          />
         </div>
       </div>
     </div>

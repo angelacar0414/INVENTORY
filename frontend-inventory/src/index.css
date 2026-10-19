@@ -168,3 +168,405 @@ body {
   font-size: 1.6rem;
   font-weight: 700;
 }
+
+
+/* ============================================================
+   ACTUALIZACIÓN VISUAL (versión 1.1)
+   ------------------------------------------------------------
+   Estas reglas van al final a propósito: refinan el aspecto de
+   las piezas que ya usan TODOS los módulos (tarjetas, tablas,
+   etiquetas, botones, campos y menú lateral) sin tener que
+   modificar cada pantalla. Así el estilo es uniforme (RNF-004).
+
+   Paleta:
+     azul   #2563eb  -> acción principal y ENTRADAS
+     naranja #E8710A -> SALIDAS y avisos
+     verde  #0CA30C  -> estado bueno
+     rojo   #D03B3B  -> estado crítico
+   ============================================================ */
+
+body {
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: #f4f6fa;
+}
+
+/* ---------- Encabezados de página ---------- */
+.encabezado-pagina h1,
+.encabezado-pagina h2 {
+  font-size: 1.9rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.15rem;
+}
+
+.fecha-encabezado {
+  display: inline-block;
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+/* Solo la primera letra en mayúscula ("Domingo, 18 de octubre..."). */
+.fecha-encabezado::first-letter {
+  text-transform: uppercase;
+}
+
+/* ---------- Tarjetas ---------- */
+.tarjeta {
+  border: 1px solid #e6e9f0;
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.tarjeta h5 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+/* ---------- Tablas ---------- */
+.tarjeta .table {
+  --bs-table-bg: transparent;
+}
+
+.tarjeta .table thead th {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6b7280;
+  border-bottom: 1px solid #e6e9f0;
+  padding: 0.65rem 0.75rem;
+}
+
+.tarjeta .table tbody td {
+  padding: 0.7rem 0.75rem;
+  border-bottom-color: #f0f2f6;
+}
+
+.tarjeta .table tbody tr:hover td {
+  background-color: #f8faff;
+}
+
+/* ---------- Etiquetas de estado (badges) ----------
+   Tono suave con texto fuerte: se leen mejor que el color sólido. */
+.badge {
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 0.38em 0.8em;
+}
+
+.badge.bg-success { background-color: #e3f6e3 !important; color: #0a7a0a !important; }
+.badge.bg-danger { background-color: #fbe6e6 !important; color: #b52f2f !important; }
+.badge.bg-warning { background-color: #fdeedd !important; color: #a84e05 !important; }
+.badge.bg-primary { background-color: #e8f0ff !important; color: #1d4fc7 !important; }
+.badge.bg-secondary { background-color: #eceef2 !important; color: #5b6270 !important; }
+
+/* ---------- Botones y campos ---------- */
+.btn {
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.form-control,
+.form-select {
+  border-radius: 10px;
+  border-color: #d9deea;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.15);
+}
+
+.link-editar,
+.link-desactivar {
+  font-weight: 600;
+}
+
+/* ---------- Menú lateral ---------- */
+.sidebar-link {
+  margin: 2px 8px;
+  border-radius: 8px;
+  transition: background-color 0.15s;
+}
+
+.sidebar-link.activo {
+  border-radius: 8px;
+}
+
+/* ============================================================
+   TARJETA DE INDICADOR (KPI) - Dashboard y Reportes
+   ============================================================ */
+.kpi-fila {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* En los Reportes los indicadores van dentro de .tarjetas-kpi. */
+.tarjetas-kpi {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 1rem;
+}
+
+.kpi-tarjeta {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: #ffffff;
+  border: 1px solid #e6e9f0;
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+  color: inherit;
+  text-decoration: none;
+}
+
+.kpi-enlace {
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+
+.kpi-enlace:hover {
+  color: inherit;
+  box-shadow: 0 4px 14px rgba(16, 24, 40, 0.1);
+  transform: translateY(-1px);
+}
+
+.kpi-chip {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.kpi-azul { background: #e8f0ff; color: #2563eb; }
+.kpi-naranja { background: #fdeedd; color: #c85f06; }
+.kpi-verde { background: #e3f6e3; color: #0a8a0a; }
+.kpi-rojo { background: #fbe6e6; color: #b52f2f; }
+.kpi-gris { background: #eceef2; color: #5b6270; }
+.kpi-morado { background: #eeeafc; color: #5b3fd0; }
+
+.kpi-titulo {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.kpi-valor {
+  display: block;
+  font-size: 1.65rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.texto-entrada { color: #1d4fc7; }
+.texto-salida { color: #a84e05; }
+
+/* ============================================================
+   DASHBOARD
+   ============================================================ */
+.dash-alerta {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  background: #fff7ed;
+  border: 1px solid #fbd9ad;
+  border-radius: 14px;
+  padding: 12px 18px;
+  margin-bottom: 1rem;
+  color: #6b3a05;
+}
+
+.dash-alerta-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #c85f06;
+  flex: none;
+}
+
+.dash-alerta-boton {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: #ffffff;
+  border: 1px solid #e3c79b;
+  color: #8a4a06;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.dash-alerta-boton:hover {
+  background: #fffaf3;
+  color: #8a4a06;
+}
+
+.dash-fila {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.dash-titulo-fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.dash-actividad-cuerpo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.dash-actividad-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.dash-separador {
+  width: 1px;
+  align-self: stretch;
+  background: #e6e9f0;
+}
+
+.dash-barra {
+  display: flex;
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  gap: 2px;
+  margin-top: 1.2rem;
+}
+
+.dash-leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.2rem;
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  color: #4b5563;
+}
+
+.dash-leyenda i {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  margin-right: 6px;
+}
+
+.etiqueta-tipo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.3em 0.75em;
+  border-radius: 999px;
+}
+
+.etiqueta-entrada { background: #e8f0ff; color: #1d4fc7; }
+.etiqueta-salida { background: #fdeedd; color: #a84e05; }
+
+.enlace-ver-todos {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  color: #2563eb;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.dash-accesos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.acceso-rapido {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 9px 16px;
+  border-radius: 10px;
+  border: 1px solid #d9deea;
+  background: #ffffff;
+  color: #1f2937;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: box-shadow 0.15s;
+}
+
+.acceso-rapido:hover {
+  color: #1f2937;
+  box-shadow: 0 2px 8px rgba(16, 24, 40, 0.1);
+}
+
+.acceso-entrada { background: #2563eb; border-color: #2563eb; color: #ffffff; }
+.acceso-entrada:hover { color: #ffffff; background: #1d4fc7; }
+.acceso-salida { background: #c85f06; border-color: #c85f06; color: #ffffff; }
+.acceso-salida:hover { color: #ffffff; background: #a84e05; }
+
+@media (max-width: 900px) {
+  .dash-fila {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ===========================================================
+   LOGO DE INVENTORY EN EL SIDEBAR (v1.2)
+   =========================================================== */
+.sidebar .logo {
+  padding: 4px 20px 18px 20px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.logo-inventory {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.logo-inventory-icono {
+  color: #3b8fe6;
+  display: block;
+}
+
+.logo-inventory-texto {
+  color: #ffffff;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}

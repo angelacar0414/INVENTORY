@@ -3,6 +3,8 @@ package com.inventory.auth;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/auth")
 public class UsuarioController {
+
+    // Registro de eventos de autenticación (SSD 8.6).
+    private static final Logger log = LoggerFactory.getLogger(UsuarioController.class);
 
     // ==================== INYECCIONES ====================
 
@@ -201,6 +206,8 @@ public class UsuarioController {
                     .orElse("");
 
 
+            log.info("Inicio de sesión correcto: usuario '{}' con rol {}", authentication.getName(), rol);
+
             // ==================== RESPUESTA ====================
 
             respuesta.put("success", true);
@@ -219,6 +226,7 @@ public class UsuarioController {
 
 
         } catch (DisabledException e) {
+            log.warn("Inicio de sesión rechazado: el usuario '{}' está inactivo", usuarioDTO.getUsername());
 
             respuesta.put("success", false);
             respuesta.put("message", "El usuario está inactivo");
@@ -229,6 +237,7 @@ public class UsuarioController {
 
 
         } catch (BadCredentialsException e) {
+            log.warn("Error de autenticación: credenciales incorrectas para el usuario '{}'", usuarioDTO.getUsername());
 
             respuesta.put("success", false);
             respuesta.put("message", "Username o contraseña incorrectos");
@@ -239,6 +248,7 @@ public class UsuarioController {
 
 
         } catch (Exception e) {
+            log.error("Error inesperado al autenticar", e);
 
             respuesta.put("success", false);
             respuesta.put(
@@ -271,6 +281,10 @@ public class UsuarioController {
         Map<String, Object> respuesta = new HashMap<>();
 
         try {
+
+            String quien = request.getUserPrincipal() != null
+                    ? request.getUserPrincipal().getName() : "desconocido";
+            log.info("Cierre de sesión: usuario '{}'", quien);
 
             // Obtener la sesión actual, si existe.
             HttpSession session = request.getSession(false);
