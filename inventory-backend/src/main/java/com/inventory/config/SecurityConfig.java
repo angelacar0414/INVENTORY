@@ -275,6 +275,11 @@ public class SecurityConfig {
                  * La gestión de usuarios es exclusiva
                  * del administrador.
                  */
+                // Reportes: consulta y exportación solo para el administrador
+                // (HU-018 y HU-019 de la EKB).
+                .requestMatchers("/api/v1/reportes/**")
+                .hasRole("ADMINISTRADOR")
+
                 .requestMatchers("/api/v1/usuarios/**")
                 .hasRole("ADMINISTRADOR")
 

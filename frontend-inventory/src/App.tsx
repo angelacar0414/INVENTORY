@@ -62,6 +62,15 @@ import { ListaMovimientos } from "./movements/pages/ListaMovimientos";
 import { FormularioMovimiento } from "./movements/pages/FormularioMovimiento";
 
 /**
+ * Página del módulo Reportes.
+ *
+ * ReportesPage:
+ * Dos pestañas (Productos y Movimientos) con filtros y descarga
+ * en PDF y Excel. Solo el ADMINISTRADOR puede consultarla.
+ */
+import { ReportesPage } from "./reports/pages/ReportesPage";
+
+/**
  * COMPONENTE PRINCIPAL DE RUTAS
  * -----------------------------
  *
@@ -260,6 +269,21 @@ function App() {
         element={
           <ProtectedRoute>
             <FormularioMovimiento key="salida" tipo="SALIDA" />
+          </ProtectedRoute>
+        }
+      />
+
+
+      {/* =====================================================
+          REPORTES
+          ===================================================== */}
+
+      {/* Reportes de productos y movimientos (PDF y Excel). */}
+      <Route
+        path="/reportes"
+        element={
+          <ProtectedRoute>
+            <ReportesPage />
           </ProtectedRoute>
         }
       />
