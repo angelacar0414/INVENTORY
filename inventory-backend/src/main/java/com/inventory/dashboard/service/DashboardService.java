@@ -2,10 +2,14 @@ package com.inventory.dashboard.service;
 
 import com.inventory.dashboard.dto.DashboardDTO;
 import com.inventory.dashboard.dto.MovimientoResumenDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +33,8 @@ import java.util.List;
 @Service
 public class DashboardService {
 
+    private static final Logger log = LoggerFactory.getLogger(DashboardService.class);
+
     private final JdbcTemplate jdbcTemplate;
 
     public DashboardService(JdbcTemplate jdbcTemplate) {
@@ -43,13 +49,14 @@ public class DashboardService {
         long totalMovimientos = contarTodosLosMovimientos();
         long stockBajo = contarProductosStockBajo();
         long agotados = contarProductosAgotados();
-        long entradasHoy = contarMovimientosDeHoy("ENTRADA");
-        long salidasHoy = contarMovimientosDeHoy("SALIDA");
+        // Cada arreglo trae {cantidad de movimientos, unidades movidas}.
+        long[] entradas = resumenDeHoy("ENTRADA");
+        long[] salidas = resumenDeHoy("SALIDA");
         List<MovimientoResumenDTO> ultimosMovimientos = obtenerUltimosMovimientos(5);
 
         return new DashboardDTO(totalProductos, totalCategorias,
                 totalProveedores, totalClientes, totalMovimientos, stockBajo, agotados,
-                entradasHoy, salidasHoy, ultimosMovimientos);
+                entradas[0], salidas[0], entradas[1], salidas[1], ultimosMovimientos);
     }
 
     private long contarProductosActivos() {
@@ -112,16 +119,43 @@ public class DashboardService {
         }
     }
 
-    private long contarMovimientosDeHoy(String tipoMovimiento) {
+    /**
+     * Resume la actividad de HOY de un tipo de movimiento (ENTRADA o SALIDA).
+     *
+     * Devuelve dos números:
+     *   [0] cuántos movimientos se registraron hoy.
+     *   [1] cuántas unidades se movieron en total (la suma de las cantidades).
+     *
+     * Antes usábamos DATE(fecha_movimiento) = CURDATE(). El problema es que
+     * CURDATE() lo calcula MySQL con SU zona horaria, y las fechas de los
+     * movimientos las guarda Java con la suya (la URL de conexión tiene
+     * serverTimezone=UTC). En la noche, cuando en Colombia todavía es "hoy"
+     * pero en UTC ya es "mañana", el contador se quedaba en cero.
+     *
+     * Ahora el rango de "hoy" lo calcula Java con LocalDate.now(), que es el
+     * mismo reloj con el que se guardó el movimiento, y se lo enviamos a
+     * MySQL como Timestamp (igual que hace el módulo de Reportes).
+     */
+    private long[] resumenDeHoy(String tipoMovimiento) {
         try {
-            String sql = "SELECT COUNT(*) FROM movimiento " +
-                    "WHERE tipo_movimiento = ? AND DATE(fecha_movimiento) = CURDATE()";
-            Long total = jdbcTemplate.queryForObject(sql, Long.class, tipoMovimiento);
-            return total == null ? 0 : total;
+            LocalDate hoy = LocalDate.now();
+            Timestamp desde = Timestamp.valueOf(hoy.atStartOfDay());
+            Timestamp hasta = Timestamp.valueOf(hoy.plusDays(1).atStartOfDay());
+
+            String sql = "SELECT COUNT(*), COALESCE(SUM(cantidad), 0) FROM movimiento " +
+                    "WHERE tipo_movimiento = ? AND fecha_movimiento >= ? AND fecha_movimiento < ?";
+
+            return jdbcTemplate.query(sql, (ResultSetExtractor<long[]>) rs -> {
+                if (rs.next()) {
+                    return new long[]{rs.getLong(1), rs.getLong(2)};
+                }
+                return new long[]{0, 0};
+            }, tipoMovimiento, desde, hasta);
         } catch (Exception e) {
-            // Todavía no existe la tabla movimiento (el módulo de
-            // Movimientos no está armado), así que dejamos el contador en 0.
-            return 0;
+            // No tumbamos el Dashboard, pero dejamos el motivo en la consola
+            // del Backend para poder encontrar el problema.
+            log.error("No se pudo calcular la actividad de hoy ({})", tipoMovimiento, e);
+            return new long[]{0, 0};
         }
     }
 
@@ -149,8 +183,9 @@ public class DashboardService {
                 );
             }, cantidad);
         } catch (Exception e) {
-            // Todavía no existen las tablas producto/movimiento, entonces
-            // dejamos la lista vacía en lugar de tumbar el Dashboard.
+            // Dejamos la lista vacía en lugar de tumbar el Dashboard, pero
+            // registramos el error para no perderlo en silencio.
+            log.error("No se pudieron consultar los últimos movimientos", e);
         }
         return lista;
     }

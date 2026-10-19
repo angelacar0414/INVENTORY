@@ -799,3 +799,21 @@ body {
 .sidebar {
   min-height: 100vh;
 }
+
+
+/* ===========================================================
+   ACTIVIDAD DE HOY: unidades y número de movimientos (v1.4)
+   =========================================================== */
+.dash-unidades {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: #64748b;
+}
+
+.dash-detalle {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.78rem;
+  color: #64748b;
+}

@@ -276,7 +276,7 @@ Indicadores:
 Total de productos, categorías, proveedores y clientes activos.
 Total histórico de movimientos registrados.
 Productos con stock bajo y agotados.
-Entradas y salidas del día.
+Entradas y salidas del día (cantidad de movimientos y unidades movidas). El día se calcula con la fecha de Java, la misma con la que se guardan los movimientos.
 Últimos movimientos registrados.
 
 Endpoint

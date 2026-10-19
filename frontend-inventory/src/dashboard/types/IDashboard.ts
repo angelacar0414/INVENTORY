@@ -23,5 +23,7 @@ export interface IDashboardResumen {
   agotados: number;
   entradasHoy: number;
   salidasHoy: number;
+  unidadesEntradasHoy: number;
+  unidadesSalidasHoy: number;
   ultimosMovimientos: IMovimientoResumen[];
 }

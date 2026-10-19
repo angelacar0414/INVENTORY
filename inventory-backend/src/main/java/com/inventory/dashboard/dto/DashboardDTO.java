@@ -23,6 +23,8 @@ public class DashboardDTO {
     private long agotados;
     private long entradasHoy;
     private long salidasHoy;
+    private long unidadesEntradasHoy;
+    private long unidadesSalidasHoy;
     private List<MovimientoResumenDTO> ultimosMovimientos;
 
     public DashboardDTO() {
@@ -32,6 +34,7 @@ public class DashboardDTO {
                          long totalProveedores, long totalClientes,
                          long totalMovimientos, long stockBajo, long agotados,
                          long entradasHoy, long salidasHoy,
+                         long unidadesEntradasHoy, long unidadesSalidasHoy,
                          List<MovimientoResumenDTO> ultimosMovimientos) {
         this.totalProductos = totalProductos;
         this.totalCategorias = totalCategorias;
@@ -42,6 +45,8 @@ public class DashboardDTO {
         this.agotados = agotados;
         this.entradasHoy = entradasHoy;
         this.salidasHoy = salidasHoy;
+        this.unidadesEntradasHoy = unidadesEntradasHoy;
+        this.unidadesSalidasHoy = unidadesSalidasHoy;
         this.ultimosMovimientos = ultimosMovimientos;
     }
 
@@ -99,6 +104,22 @@ public class DashboardDTO {
 
     public void setAgotados(long agotados) {
         this.agotados = agotados;
+    }
+
+    public long getUnidadesEntradasHoy() {
+        return unidadesEntradasHoy;
+    }
+
+    public void setUnidadesEntradasHoy(long unidadesEntradasHoy) {
+        this.unidadesEntradasHoy = unidadesEntradasHoy;
+    }
+
+    public long getUnidadesSalidasHoy() {
+        return unidadesSalidasHoy;
+    }
+
+    public void setUnidadesSalidasHoy(long unidadesSalidasHoy) {
+        this.unidadesSalidasHoy = unidadesSalidasHoy;
     }
 
     public long getEntradasHoy() {

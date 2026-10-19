@@ -305,7 +305,7 @@ Actualmente se encuentra implementado:
 
 - Franja de alerta cuando hay productos con stock bajo o agotados.
 - Cinco tarjetas de totales: productos, categorías, proveedores, clientes y movimientos.
-- Actividad de hoy (entradas y salidas del día).
+- Actividad de hoy: unidades que entraron y salieron en el día, junto con el número de movimientos de cada tipo.
 - Estado del inventario en una barra con productos disponibles, con stock bajo y agotados.
 - Tabla de los últimos movimientos registrados, con etiquetas de ENTRADA y SALIDA y cantidades con signo.
 - Accesos rápidos a registrar entrada, registrar salida, Productos y Reportes.

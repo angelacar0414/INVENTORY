@@ -223,13 +223,13 @@ Pantalla principal del sistema con un resumen del inventario. Es de solo lectura
 - Productos, categorías, proveedores y clientes activos
 - Total histórico de movimientos registrados
 - Productos con stock bajo y agotados
-- Entradas y salidas del día
+- Entradas y salidas del día (cantidad de movimientos y unidades movidas)
 - Últimos movimientos registrados
 
 **Cómo se presenta la información:**
 - Una franja de alerta que aparece cuando hay productos con stock bajo o agotados. Su botón lleva a Reportes si el usuario es ADMINISTRADOR y a Productos si es OPERADOR.
 - Cinco tarjetas con los totales (productos, categorías, proveedores, clientes y movimientos). Cada tarjeta abre el módulo correspondiente.
-- "Actividad de hoy" con las entradas y salidas del día, y "Estado del inventario" con una barra de productos disponibles, con stock bajo y agotados.
+- "Actividad de hoy" con las unidades que entraron y salieron en el día y cuántos movimientos fueron, y "Estado del inventario" con una barra de productos disponibles, con stock bajo y agotados.
 - Tabla de últimos movimientos con etiquetas ENTRADA y SALIDA y la cantidad con signo.
 - Accesos rápidos para registrar una entrada o una salida, ir a Productos y, solo para el ADMINISTRADOR, ir a Reportes.
 

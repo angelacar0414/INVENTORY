@@ -179,7 +179,13 @@ function ContenidoDashboard({ resumen, esAdministrador, formatearFechaHora }: Pr
               <span className="kpi-chip kpi-azul"><Icono nombre="entrada" tamano={21} /></span>
               <span>
                 <span className="kpi-titulo">Entradas</span>
-                <span className="kpi-valor texto-entrada">{resumen.entradasHoy}</span>
+                <span className="kpi-valor texto-entrada">
+                  {resumen.unidadesEntradasHoy}
+                  <small className="dash-unidades"> unidades</small>
+                </span>
+                <span className="dash-detalle">
+                  {resumen.entradasHoy} movimiento(s)
+                </span>
               </span>
             </div>
 
@@ -189,7 +195,13 @@ function ContenidoDashboard({ resumen, esAdministrador, formatearFechaHora }: Pr
               <span className="kpi-chip kpi-naranja"><Icono nombre="salida" tamano={21} /></span>
               <span>
                 <span className="kpi-titulo">Salidas</span>
-                <span className="kpi-valor texto-salida">{resumen.salidasHoy}</span>
+                <span className="kpi-valor texto-salida">
+                  {resumen.unidadesSalidasHoy}
+                  <small className="dash-unidades"> unidades</small>
+                </span>
+                <span className="dash-detalle">
+                  {resumen.salidasHoy} movimiento(s)
+                </span>
               </span>
             </div>
           </div>
