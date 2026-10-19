@@ -37,9 +37,10 @@ El sistema está enfocado exclusivamente en la gestión y control de inventarios
 - **Productos:** CRUD de productos, búsqueda, filtrado, control de estado automático según stock.
 - **Movimientos de Inventario:** Registro de entradas y salidas, historial permanente e inmutable, validaciones de stock.
 - **Clientes:** Gestión de clientes para registros de salida.
-- **Dashboard:** Indicadores generales (productos, categorías, proveedores, clientes, stock bajo, agotados, entradas y salidas del día) y últimos movimientos.
+- **Dashboard:** Pantalla principal con alerta de reposición, totales (productos, categorías, proveedores, clientes y movimientos), actividad del día, estado del inventario, últimos movimientos y accesos rápidos según el rol.
 - **Reportes:** Reportes de productos y de movimientos con filtros, visualización en pantalla y exportación a PDF (con gráficas) y Excel. Solo para el rol ADMINISTRADOR.
 - **Perfil:** Consulta y actualización de los datos personales y cambio de contraseña del usuario con sesión activa.
+- **Interfaz:** Logo de Inventory en el menú lateral y en el login, iconos SVG propios (sin emojis) y un estilo visual unificado en todos los módulos.
 
 ---
 
@@ -220,9 +221,17 @@ Pantalla principal del sistema con un resumen del inventario. Es de solo lectura
 
 **Indicadores:**
 - Productos, categorías, proveedores y clientes activos
+- Total histórico de movimientos registrados
 - Productos con stock bajo y agotados
 - Entradas y salidas del día
 - Últimos movimientos registrados
+
+**Cómo se presenta la información:**
+- Una franja de alerta que aparece cuando hay productos con stock bajo o agotados. Su botón lleva a Reportes si el usuario es ADMINISTRADOR y a Productos si es OPERADOR.
+- Cinco tarjetas con los totales (productos, categorías, proveedores, clientes y movimientos). Cada tarjeta abre el módulo correspondiente.
+- "Actividad de hoy" con las entradas y salidas del día, y "Estado del inventario" con una barra de productos disponibles, con stock bajo y agotados.
+- Tabla de últimos movimientos con etiquetas ENTRADA y SALIDA y la cantidad con signo.
+- Accesos rápidos para registrar una entrada o una salida, ir a Productos y, solo para el ADMINISTRADOR, ir a Reportes.
 
 **Endpoint:**
 ```
@@ -279,6 +288,19 @@ PUT    /api/v1/perfil/contrasena
 
 ---
 
+## Interfaz y Diseño Visual
+
+Todas las pantallas internas comparten la misma identidad visual para que el sistema se vea como una sola aplicación.
+
+- **Logo:** la caja con el check de Inventory aparece en el menú lateral de todos los módulos (incluido el Dashboard) y en la pantalla de inicio de sesión.
+- **Inicio de sesión:** el logo completo a la izquierda y, a la derecha, el formulario con un icono de usuario dibujado en SVG.
+- **Iconos:** se dibujaron como SVG de línea (`components/Iconos.tsx`), por lo que no dependen de emojis ni de librerías externas.
+- **Colores con significado:** azul para entradas y acciones principales, naranja para salidas y avisos, verde para disponible, rojo para agotado o error y gris para información neutra.
+- **Estilo unificado:** las tarjetas, tablas, etiquetas de estado, botones y campos de todos los módulos se definen en `src/index.css`, de modo que los cambios visuales se hacen en un solo lugar.
+- **Componentes compartidos:** `Sidebar`, `LogoInventory`, `IconoUsuario`, `Iconos`, `TarjetaKpi` (usada en el Dashboard y en Reportes) y `Paginacion`, para no repetir código.
+
+---
+
 ## Tecnologías Utilizadas
 
 ### Backend
@@ -291,6 +313,10 @@ PUT    /api/v1/perfil/contrasena
 - Maven
 - MySQL 8.0
 - BCrypt
+- JdbcTemplate (consultas del Dashboard y de Reportes)
+- Apache POI (exportación a Excel)
+- OpenPDF (exportación a PDF)
+- SLF4J (registro de eventos)
 
 ### Frontend
 - React 18
@@ -324,6 +350,8 @@ Base de datos (MySQL)
 Controller → Service → Repository → Base de datos
 ```
 
+Los módulos de gestión (usuarios, categorías, productos, etc.) acceden a la base de datos con Spring Data JPA. El Dashboard y los Reportes son de solo lectura, por lo que consultan con `JdbcTemplate` y consultas parametrizadas, sin entidades propias.
+
 **Base de datos:** `inventory_db`
 
 **Configuración:** `inventory-backend/src/main/resources/application.properties`
@@ -335,20 +363,24 @@ Controller → Service → Repository → Base de datos
 ```
 INVENTORY/
 ├── database/
-│   ├── 01_create_database.sql
-│   ├── 02_create_tables.sql
+│   ├── 01_create_categoria_table.sql
+│   ├── 02_create_producto_table.sql
 │   └── 03_create_movimiento_table.sql
+├── docs/
+│   └── PRUEBAS_MANUALES.md
 ├── frontend-inventory/
 │   └── src/
+│       ├── assets/ (logo de Inventory)
 │       ├── auth/
 │       ├── categories/
 │       ├── clients/
-│       ├── components/
+│       ├── components/ (Sidebar, LogoInventory, IconoUsuario, Iconos, TarjetaKpi, Paginacion)
 │       ├── dashboard/
 │       ├── movements/
 │       ├── products/
 │       ├── profile/
 │       ├── reports/
+│       ├── services/
 │       ├── suppliers/
 │       ├── users/
 │       └── ...
@@ -402,6 +434,9 @@ Pruebas de endpoints mediante Postman:
 - Categorías, Proveedores y Clientes
 - Productos (CRUD, búsqueda, cambio de estado)
 - Movimientos (entrada, salida, búsqueda, filtrado)
+- Dashboard (totales y últimos movimientos)
+- Reportes (filtros y descarga de PDF y Excel, solo ADMINISTRADOR)
+- Perfil (consulta, actualización y cambio de contraseña)
 
 ### Frontend
 - Navegación entre módulos
@@ -411,6 +446,9 @@ Pruebas de endpoints mediante Postman:
 - Validaciones de negocio
 - Mensajes de error y éxito
 - Integración con el Backend
+- Diferencias de acceso entre ADMINISTRADOR y OPERADOR (Dashboard, Reportes y Usuarios)
+
+Los casos de prueba manuales están documentados en [`docs/PRUEBAS_MANUALES.md`](docs/PRUEBAS_MANUALES.md).
 
 ---
 
@@ -436,9 +474,10 @@ Pruebas de endpoints mediante Postman:
 ## Notas para el Desarrollo
 
 - Los archivos de configuración de la base de datos están en la carpeta `database/`
-- La documentación adicional se encuentra en `docs/` (próximamente)
+- La documentación adicional se encuentra en `docs/` (por ahora, los casos de pruebas manuales)
 - El proyecto sigue las convenciones de arquitectura por capas definidas en la EKB
 - Todos los módulos implementados incluyen validaciones de negocio en Backend y Frontend
 - Las listas de los módulos usan la paginación compartida `components/Paginacion.tsx` (10 registros por página)
 - El Backend registra eventos relevantes (inicio y cierre de sesión, errores de autenticación, excepciones no controladas y errores de base de datos) mediante SLF4J
 - Las respuestas de error siguen el formato `{ success, message, errors }` definido en el SSD
+- La apariencia (logo, iconos, colores y componentes compartidos) se centraliza en `frontend-inventory/src/components/` y `src/index.css`

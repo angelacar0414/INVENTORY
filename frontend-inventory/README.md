@@ -21,6 +21,7 @@ Perfil | IMPLEMENTADO
 
 ## Estructura del proyecto
 
+```
 frontend-inventory/
 ├── index.html
 ├── package.json
@@ -29,34 +30,31 @@ frontend-inventory/
 └── src/
     ├── main.tsx (punto de entrada)
     ├── App.tsx (rutas de la aplicación)
-    ├── index.css (estilos globales)
-    ├── components/
-    │   ├── Sidebar.tsx (menú lateral reutilizable)
+    ├── index.css (estilos globales y estilo visual compartido)
+    ├── assets/
+    │   └── logo-inventory.jpeg (logo completo, usado en el login)
+    ├── services/
+    │   └── api.ts (instancia de Axios con la URL base del Backend)
+    ├── components/ (piezas reutilizables)
+    │   ├── Sidebar.tsx (menú lateral con el logo, el usuario y los módulos)
+    │   ├── LogoInventory.tsx (logo de la caja con check en SVG)
+    │   ├── IconoUsuario.tsx (icono de usuario del login en SVG)
+    │   ├── Iconos.tsx (conjunto de iconos SVG de línea)
+    │   ├── TarjetaKpi.tsx (tarjeta de indicador del Dashboard y Reportes)
     │   └── Paginacion.tsx (paginación reutilizable para las listas)
-    ├── profile/ (módulo Perfil)
-    │   ├── pages/
-    │   ├── services/
-    │   └── types/
-    ├── reports/ (módulo Reportes)
-    │   ├── pages/
-    │   ├── services/
-    │   └── types/
-    ├── auth/ (módulo de Autenticación)
-    │   ├── pages/
-    │   ├── services/
-    │   └── types/
-    ├── categories/ (módulo Categorías)
-    │   ├── pages/
-    │   ├── services/
-    │   └── types/
-    ├── suppliers/ (módulo Proveedores)
-    │   ├── pages/
-    │   ├── services/
-    │   └── types/
-    └── users/ (módulo Usuarios)
-        ├── pages/
-        ├── services/
-        └── types/
+    ├── auth/ (Autenticación)
+    ├── categories/ (Categorías)
+    ├── suppliers/ (Proveedores)
+    ├── clients/ (Clientes)
+    ├── users/ (Usuarios)
+    ├── products/ (Productos)
+    ├── movements/ (Movimientos)
+    ├── dashboard/ (Dashboard)
+    ├── reports/ (Reportes)
+    └── profile/ (Perfil)
+```
+
+Cada carpeta de módulo se organiza igual: `pages/` (pantallas), `services/` (llamadas Axios al Backend) y `types/` (interfaces TypeScript).
 
 ## Patrón que seguimos en todos los módulos
 
@@ -130,7 +128,7 @@ categories/
 ### Rutas
 
 - `/categorias` — listado
-- `/categorias/nuevo` — formulario de creación
+- `/categorias/nueva` — formulario de creación
 - `/categorias/editar/:id` — formulario de edición
 
 ### Detalles específicos
@@ -206,10 +204,15 @@ Actualmente se encuentra implementado:
 - Cierre de sesión.
 - Manejo de sesión HTTP.
 - Protección de rutas mediante `ProtectedRoute`.
+- Pantalla de inicio de sesión dividida en dos partes: el logo de Inventory a la izquierda y el formulario sobre fondo azul a la derecha.
+- Icono de usuario dibujado en SVG (`components/IconoUsuario.tsx`) en lugar de un emoji.
+- Botón para mostrar u ocultar la contraseña mientras se escribe.
 
 ### Estructura
 
+```
 auth/
+├── auth.css (estilos del login y del registro)
 ├── pages/
 │   ├── LoginPage.tsx
 │   ├── RegistroPage.tsx
@@ -217,6 +220,7 @@ auth/
 ├── services/
 │   └── authService.ts
 └── types/
+```
 
 ### Rutas
 
@@ -296,12 +300,17 @@ El módulo de Dashboard es la pantalla principal del sistema, la que se muestra 
 
 Actualmente se encuentra implementado:
 
-- Consulta de indicadores generales (productos totales, stock bajo, agotados, entradas del día, salidas del día).
-- Listado de los últimos movimientos registrados.
+- Franja de alerta cuando hay productos con stock bajo o agotados.
+- Cinco tarjetas de totales: productos, categorías, proveedores, clientes y movimientos.
+- Actividad de hoy (entradas y salidas del día).
+- Estado del inventario en una barra con productos disponibles, con stock bajo y agotados.
+- Tabla de los últimos movimientos registrados, con etiquetas de ENTRADA y SALIDA y cantidades con signo.
+- Accesos rápidos a registrar entrada, registrar salida, Productos y Reportes.
 - Acceso disponible tanto para el rol ADMINISTRADOR como para el rol OPERADOR.
 
 ### Estructura
 
+```
 dashboard/
 ├── pages/
 │   └── DashboardPage.tsx (pantalla principal)
@@ -309,6 +318,7 @@ dashboard/
 │   └── dashboardService.ts (llamadas Axios al Backend)
 └── types/
     └── IDashboard.ts (interfaces TypeScript)
+```
 
 ### Rutas
 
@@ -318,7 +328,11 @@ dashboard/
 
 - `DashboardPage.tsx` utiliza `useEffect` para solicitar el resumen al Backend cuando se abre la página.
 - `dashboardService.ts` realiza la petición mediante Axios a `http://localhost:8080/api/v1/dashboard`.
-- Los indicadores de productos y movimientos se actualizan automáticamente cuando se registran cambios en el inventario.
+- Las tarjetas de totales usan el componente compartido `TarjetaKpi` y los iconos de `Iconos.tsx`. Cada tarjeta es un enlace que lleva al módulo correspondiente.
+- La franja de alerta cambia de destino según el rol: el ADMINISTRADOR va a Reportes y el OPERADOR va a Productos.
+- En los accesos rápidos, el botón de Reportes solo se muestra al ADMINISTRADOR.
+- La barra de estado calcula los disponibles como el total de productos menos los de stock bajo y los agotados.
+- Los totales se calculan en cada consulta, así que al volver al Dashboard después de registrar cambios en el inventario ya aparecen actualizados.
 
   -----------------------------------------------------
 
@@ -332,19 +346,22 @@ Actualmente se encuentra implementado:
 - Reporte de movimientos con filtros por rango de fechas, tipo, producto y cliente.
 - Indicadores resumen, tabla de detalle, búsqueda y paginación.
 - Descarga en PDF (con gráficas) y en Excel con los filtros del último reporte generado.
+- Indicadores con la misma tarjeta y los mismos iconos del Dashboard, para mantener una apariencia uniforme.
 
 ### Estructura
 
+```
 reports/
 ├── pages/
 │   ├── ReportesPage.tsx (pestañas Productos y Movimientos)
 │   ├── ReporteProductosTab.tsx
 │   ├── ReporteMovimientosTab.tsx
-│   └── ComponentesReporte.tsx (piezas compartidas)
+│   └── ComponentesReporte.tsx (piezas compartidas: indicadores, formato de dinero y paginación)
 ├── services/
 │   └── reporteService.ts (llamadas Axios y descarga de archivos)
 └── types/
     └── IReporte.ts (interfaces TypeScript)
+```
 
 ### Rutas
 
@@ -358,6 +375,7 @@ El módulo de Perfil permite que cada usuario consulte y actualice su informaci�
 
 ### Estructura
 
+```
 profile/
 ├── pages/
 │   └── PerfilPage.tsx (datos personales y cambio de contraseña)
@@ -365,10 +383,11 @@ profile/
 │   └── perfilService.ts (llamadas Axios al Backend)
 └── types/
     └── IPerfil.ts (interfaces TypeScript)
+```
 
 ### Rutas
 
-- `/perfil` — mi perfil
+- `/perfil` — mi perfil (se abre desde la opción "Mi perfil" del menú lateral)
 
 ### Detalles específicos
 
@@ -378,6 +397,37 @@ profile/
 
   -----------------------------------------------------
 
+
+## COMPONENTES COMPARTIDOS E IDENTIDAD VISUAL
+
+Para que todos los módulos se vean y se comporten igual, las piezas que se repiten viven en `src/components/` y los estilos comunes en `src/index.css`.
+
+### Componentes
+
+Componente | Para qué sirve
+--- | ---
+`Sidebar.tsx` | Menú lateral de todas las pantallas internas. Muestra el logo, el usuario con su rol, los módulos (incluido "Mi perfil") y el botón para cerrar sesión.
+`LogoInventory.tsx` | Logo de la caja con el check, dibujado en SVG. Se puede mostrar con o sin la palabra "Inventory" y en cualquier tamaño.
+`IconoUsuario.tsx` | Icono de usuario (cabeza y hombros) que se muestra en el login.
+`Iconos.tsx` | Conjunto de iconos SVG de línea (paquete, capas, camión, personas, intercambio, alerta, entrada, salida, gráfica, entre otros). Reemplazan a los emojis.
+`TarjetaKpi.tsx` | Tarjeta de indicador con icono, título y valor. Se usa en el Dashboard y en Reportes y puede funcionar como enlace.
+`Paginacion.tsx` | Hook `usePaginacion` y componente `Paginacion`, con 10 registros por página en las listas.
+
+### Colores
+
+Cada color tiene un significado y se usa igual en todo el sistema:
+
+- Azul: acciones principales y entradas.
+- Naranja: salidas y avisos.
+- Verde: productos disponibles.
+- Rojo: agotados y errores.
+- Gris: información neutra.
+
+### Estilos globales
+
+`index.css` define el aspecto común de tarjetas, tablas, etiquetas de estado (tipo píldora), botones, campos de formulario y menú lateral. Si necesitamos cambiar el aspecto de todo el sistema, lo hacemos en ese archivo.
+
+---
 
 ## Estado actual del Frontend
 
@@ -395,3 +445,5 @@ Actualmente se encuentran implementados y funcionales los módulos de:
 - Perfil
 
 Todas las listas de los módulos cuentan con paginación mediante el componente compartido `components/Paginacion.tsx`.
+
+Todas las pantallas internas comparten el logo, los iconos SVG y el estilo visual descritos en la sección de componentes compartidos.

@@ -17,6 +17,10 @@ Este es el proyecto Backend de INVENTORY, desarrollado con Java 17 y Spring Boot
 - MySQL
 - BCrypt
 - Sesiones HTTP
+- JdbcTemplate (Dashboard y Reportes)
+- Apache POI (exportación a Excel)
+- OpenPDF (exportación a PDF)
+- SLF4J (registro de eventos)
 
 ## Base de datos
 
@@ -26,31 +30,46 @@ Base de datos utilizada:
 
 ```text
 inventory_db
+```
 
 La configuración de conexión se encuentra en:
 
+```text
 src/main/resources/application.properties
-Estructura del proyecto
+```
 
-El Backend está organizado mediante una arquitectura por capas, separando las responsabilidades principales de controladores, servicios y repositorios.
+## Estructura del proyecto
 
+El Backend está organizado mediante una arquitectura por capas, separando las responsabilidades principales de controladores, servicios y repositorios. Cada módulo vive en su propio paquete (organización por funcionalidad).
+
+```text
 inventory-backend/
 └── src/
     └── main/
         ├── java/
         │   └── com.inventory/
-        │       ├── auth/
-        │       ├── user/
-        │       ├── category/
-        │       ├── supplier/
-        │       └── ...
+        │       ├── auth/        (inicio de sesión, registro y cierre de sesión)
+        │       ├── user/        (usuarios)
+        │       ├── category/    (categorías)
+        │       ├── supplier/    (proveedores)
+        │       ├── client/      (clientes)
+        │       ├── product/     (productos)
+        │       ├── movement/    (movimientos de inventario)
+        │       ├── dashboard/   (indicadores generales)
+        │       ├── report/      (reportes, con exportación a PDF y Excel)
+        │       ├── profile/     (perfil del usuario con sesión)
+        │       ├── config/      (SecurityConfig y CorsConfig)
+        │       └── exception/   (excepciones y manejo global de errores)
         │
         └── resources/
             └── application.properties
-Patrón de arquitectura
+```
+
+## Patrón de arquitectura
 
 La comunicación entre los componentes principales del Backend sigue el siguiente flujo:
 
+```text
 Controller
      |
      v
@@ -61,8 +80,9 @@ Controller
      |
      v
    MySQL
+```
 
-Los controladores reciben las solicitudes HTTP, los servicios contienen la lógica de negocio y los repositorios se encargan de la comunicación con la base de datos mediante Spring Data JPA.
+Los controladores reciben las solicitudes HTTP, los servicios contienen la lógica de negocio y los repositorios se encargan de la comunicación con la base de datos mediante Spring Data JPA. Los módulos de solo lectura (Dashboard y Reportes) consultan con `JdbcTemplate` y consultas parametrizadas.
 -------------------------------------------------------------------
 ## Módulo: Autenticación
 
@@ -254,6 +274,7 @@ El módulo de Dashboard entrega los indicadores generales del inventario. Es de 
 Indicadores:
 
 Total de productos, categorías, proveedores y clientes activos.
+Total histórico de movimientos registrados.
 Productos con stock bajo y agotados.
 Entradas y salidas del día.
 Últimos movimientos registrados.
@@ -345,6 +366,8 @@ Actualmente:
 Los endpoints de autenticación son de acceso público.
 Los endpoints de usuarios requieren el rol ADMINISTRADOR.
 Los endpoints de reportes requieren el rol ADMINISTRADOR.
+Los endpoints de dashboard y movimientos requieren el rol ADMINISTRADOR u OPERADOR.
+Los endpoints de perfil requieren un usuario autenticado, y la persona se identifica por su sesión.
 Las contraseñas se almacenan utilizando BCrypt.
 Se utilizan sesiones HTTP para mantener la autenticación.
 La protección CSRF se encuentra deshabilitada para facilitar el funcionamiento de la API REST.
@@ -377,8 +400,14 @@ Reactivación de usuarios.
 Validación de acceso según el rol.
 Gestión de categorías.
 Gestión de proveedores.
+Gestión de clientes.
+Gestión de productos.
+Registro de entradas y salidas, y consulta del historial de movimientos.
+Indicadores del dashboard.
+Reportes de productos y movimientos con filtros, y descarga de PDF y Excel (solo ADMINISTRADOR).
+Consulta y actualización del perfil, y cambio de contraseña.
 
-También se verifica la comunicación entre el Backend y el Frontend durante las pruebas de integración.
+También se verifica la comunicación entre el Backend y el Frontend durante las pruebas de integración. Los casos de prueba manuales se encuentran en `docs/PRUEBAS_MANUALES.md`, en la raíz del repositorio.
 
 Ejecución del proyecto
 
