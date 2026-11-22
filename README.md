@@ -366,6 +366,7 @@ Los módulos de gestión (usuarios, categorías, productos, etc.) acceden a la b
 ```
 INVENTORY/
 ├── database/
+│   ├── 00_instalacion_completa.sql
 │   ├── 01_create_categoria_table.sql
 │   ├── 02_create_producto_table.sql
 │   └── 03_create_movimiento_table.sql
@@ -410,6 +411,16 @@ INVENTORY/
 ---
 
 ## Ejecución del Proyecto
+
+### Base de datos
+Ejecutar en MySQL 8.0 el script completo, que crea `inventory_db` con sus 6 tablas, llaves, restricciones, índices y datos de ejemplo:
+```bash
+mysql -u root -p < database/00_instalacion_completa.sql
+```
+El script no trae contraseñas. El primer usuario se registra desde el login (queda como OPERADOR) y luego se le asigna el rol de administrador:
+```sql
+UPDATE usuario SET rol = 'ADMINISTRADOR' WHERE username = 'admin';
+```
 
 ### Backend
 ```bash
